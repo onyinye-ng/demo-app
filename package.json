@@ -18,6 +18,7 @@
   },
   "scripts": {
     "prepare": "husky install",
+    "pre-commit-checks": "commitlint --edit ",
     "start": "react-scripts start",
     "test": "react-scripts test",
     "build": "react-scripts build",
