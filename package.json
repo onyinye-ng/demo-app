@@ -17,6 +17,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "postinstall": "husky install",
     "start": "react-scripts start",
     "test": "react-scripts test",
     "build": "react-scripts build",
