@@ -17,9 +17,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "postinstall": "husky install",
     "start": "react-scripts start",
-    "build": "react-scripts build",
     "test": "react-scripts test",
+    "build": "react-scripts build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -41,7 +42,10 @@
     ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
     "autoprefixer": "^10.4.8",
+    "husky": "^8.0.1",
     "postcss": "^8.4.16",
     "tailwindcss": "^3.1.8"
   }
