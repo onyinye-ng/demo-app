@@ -4,15 +4,17 @@ module.exports = {
   useTabs: false, // indent_style = space
   endOfLine: 'lf', // end_of_line = lf
   semi: false, // default: true
-  singleQuote: true, // default: false
+  singleQuote: false, // default: false
   printWidth: 100, // default: 80
   trailingComma: 'es5',
   bracketSpacing: true,
+  arrowParens: 'always',
+  singleAttributePerLine: true,
   overrides: [
     {
       files: '*.{ts,tsx,jsx,js}',
       options: {
-        parser: 'flow',
+        parser: 'typescript',
       },
     },
   ],
