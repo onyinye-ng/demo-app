@@ -1,6 +1,6 @@
 import { Suspense } from "react"
 import { Route, Routes } from "react-router-dom"
-import { Register, Welcome } from "./pages"
+import { Dashboard, Login, Register, Welcome } from "./pages"
 
 function App() {
   return (
@@ -14,6 +14,22 @@ function App() {
           <Route
             path="/register"
             element={<Register />}
+          />
+          <Route
+            path="/login"
+            element={<Login />}
+          />
+          <Route
+            path="/dashboard"
+            element={<Dashboard />}
+          />
+          <Route
+            path="/dashboard/activate"
+            element={<Dashboard />}
+          />
+          <Route
+            path="/dashboard/payment"
+            element={<Dashboard />}
           />
         </Routes>
       </Suspense>
