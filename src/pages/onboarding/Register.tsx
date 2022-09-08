@@ -1,16 +1,14 @@
 import React, { FormEvent, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { OnboardingWrapper } from "../../components"
-import { Button, CheckboxInput, Input, Label, TextButton } from "../../components/forms"
+import { Button, CheckboxInput, Input, Label } from "../../components/forms"
 
 export const Register: React.FC<{}> = () => {
   const navigate = useNavigate()
-  const [isVerifying, setIsVerifying] = useState<boolean>(false)
   const [credentials, setCredentials] = useState({
     businessName: "",
     email: "",
     telephone: "",
-    token: "",
   })
 
   const handleChange = (field: string, value: string | boolean) => {
@@ -18,16 +16,10 @@ export const Register: React.FC<{}> = () => {
       ...credentials,
       [field]: value,
     })
-    if (field === "email") setIsVerifying(false)
   }
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-
-    if (isVerifying === false) {
-      setIsVerifying(true)
-      return
-    }
 
     navigate("/dashboard")
   }
@@ -85,6 +77,7 @@ export const Register: React.FC<{}> = () => {
                 type="checkbox"
                 required
                 id="suscribe"
+                onChange={(e) => handleChange("suscribe", e.target.checked)}
               />
               <Label
                 htmlFor="suscribe"
@@ -94,33 +87,12 @@ export const Register: React.FC<{}> = () => {
               </Label>
             </div>
 
-            {isVerifying && (
-              <div className="w-full flex flex-col gap-1">
-                <Label htmlFor="token">Verification Token</Label>
-                <Input
-                  onChange={(e) => handleChange("token", e.target.value)}
-                  maxLength={6}
-                  id="token"
-                  autoComplete="off"
-                  placeholder="123456"
-                  value={credentials.token}
-                />
-                <TextButton
-                  type="button"
-                  className="self-end"
-                  title="Resend code"
-                >
-                  Resend Code
-                </TextButton>
-              </div>
-            )}
-
             <Button
               title="Register"
               type="submit"
               className="mt-5 p-2 bg-secondary text-grey-dark"
             >
-              {isVerifying === true ? "Register" : "Verify Email"}
+              Register Business
             </Button>
           </form>
         </div>
