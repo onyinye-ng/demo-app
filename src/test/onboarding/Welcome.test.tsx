@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom"
 import { MemoryRouter } from "react-router-dom"
 // import { createMemoryHistory } from "history"
-import App from "../App"
+import App from "../../App"
 
 // Visit this for guidance
 // https://testing-library.com/docs/
@@ -27,20 +27,4 @@ test("Testing route '/'", () => {
 
   userEvent.click(screen.getByText(/Create a Demo Business/i))
   expect(screen.getByText(/Create Business/i)).toBeInTheDocument()
-})
-
-test("Testing route '/register'", () => {
-  const routes = ["/", "/register"]
-
-  // use <MemoryRouter> when you want to manually control the history
-  render(
-    <MemoryRouter initialEntries={routes}>
-      <App />
-    </MemoryRouter>
-  )
-
-  expect(screen.getByRole("heading").innerHTML).toBe("Create Business")
-  expect(screen.getByLabelText(/Business Name/i)).toBeInTheDocument()
-  expect(screen.getByLabelText(/Business Email/i)).toBeInTheDocument()
-  expect(screen.getByLabelText(/Business Telephone/i)).toBeInTheDocument()
 })
