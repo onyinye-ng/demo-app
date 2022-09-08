@@ -7,7 +7,7 @@ export const Register: React.FC<{}> = () => {
   const navigate = useNavigate()
   const [isVerifying, setIsVerifying] = useState<boolean>(false)
   const [credentials, setCredentials] = useState({
-    companyName: "",
+    businessName: "",
     email: "",
     telephone: "",
     token: "",
@@ -43,11 +43,11 @@ export const Register: React.FC<{}> = () => {
             className="w-full h-full flex flex-col gap-3"
           >
             <div className="w-full flex flex-col gap-1">
-              <Label htmlFor="companyName">Company Name</Label>
+              <Label htmlFor="businessName">Business Name</Label>
               <Input
-                onChange={(e) => handleChange("companyName", e.target.value)}
-                value={credentials.companyName}
-                id="companyName"
+                onChange={(e) => handleChange("businessName", e.target.value)}
+                value={credentials.businessName}
+                id="businessName"
                 autoComplete="off"
                 placeholder="ex. XYZ Company"
                 required

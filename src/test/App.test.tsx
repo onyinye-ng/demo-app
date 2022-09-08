@@ -4,14 +4,14 @@ import React from "react"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom"
 import { MemoryRouter } from "react-router-dom"
-import { createMemoryHistory } from "history"
+// import { createMemoryHistory } from "history"
 import App from "../App"
 
 // Visit this for guidance
 // https://testing-library.com/docs/
+// const history = createMemoryHistory()
 
 test("Testing route '/'", () => {
-  const history = createMemoryHistory()
   const routes = ["/"]
 
   // use <MemoryRouter> when you want to manually control the history
@@ -24,8 +24,23 @@ test("Testing route '/'", () => {
   expect(screen.getByRole("heading").innerHTML).toBe("Onyinye Technologies")
   expect(screen.getByText(/Create a Demo Business/i)).toBeInTheDocument()
   expect(screen.getByText(/Log in to your Demo Business/i)).toBeInTheDocument()
-  expect(history.location.pathname).toEqual("/")
 
   userEvent.click(screen.getByText(/Create a Demo Business/i))
-  expect(screen.getByText(/Register your business here.../i)).toBeInTheDocument()
+  expect(screen.getByText(/Create Business/i)).toBeInTheDocument()
+})
+
+test("Testing route '/register'", () => {
+  const routes = ["/", "/register"]
+
+  // use <MemoryRouter> when you want to manually control the history
+  render(
+    <MemoryRouter initialEntries={routes}>
+      <App />
+    </MemoryRouter>
+  )
+
+  expect(screen.getByRole("heading").innerHTML).toBe("Create Business")
+  expect(screen.getByLabelText(/Business Name/i)).toBeInTheDocument()
+  expect(screen.getByLabelText(/Business Email/i)).toBeInTheDocument()
+  expect(screen.getByLabelText(/Business Telephone/i)).toBeInTheDocument()
 })
