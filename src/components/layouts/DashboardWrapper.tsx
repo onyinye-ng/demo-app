@@ -4,7 +4,6 @@ import logo from "../../assets/logo.svg"
 
 const Header: React.FC<{}> = () => {
   const { pathname } = useLocation()
-  console.log(pathname)
 
   return (
     <div className="h-[10%] sticky top-0">
