@@ -56,7 +56,7 @@ export const Label: React.FC<React.LabelHTMLAttributes<HTMLLabelElement>> = (pro
   return (
     <label
       {...props}
-      className={`mb-1 ${props.className}`}
+      className={`${props.className}`}
     />
   )
 }

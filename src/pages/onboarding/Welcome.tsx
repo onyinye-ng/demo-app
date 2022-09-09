@@ -6,8 +6,8 @@ import { ArrowRightIcon } from "@heroicons/react/24/solid"
 export const Welcome: React.FC<{}> = () => {
   return (
     <OnboardingWrapper>
-      <div className="h-4/5 w-full flex justify-center items-center">
-        <div className="flex flex-col justify-center items-center w-7/12 gap-2">
+      <div className="h-4/5 flex justify-center items-center">
+        <div className="flex flex-col justify-center items-center w-5/6 md:w-7/12 lg:w-4/12 mx-auto gap-2">
           <h1 className="text-4xl font-bold text-center mt-10">Onyinye Technologies</h1>
 
           <span className="text-opacity-90 text-center mt-3">
