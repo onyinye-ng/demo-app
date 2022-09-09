@@ -26,6 +26,10 @@ export const Dashboard: React.FC<{}> = () => {
       amount: "50,000",
       id: 5,
     },
+    {
+      amount: "60,000",
+      id: 6,
+    },
   ]
 
   return (
