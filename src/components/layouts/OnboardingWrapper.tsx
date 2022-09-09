@@ -31,10 +31,10 @@ type props = {
 export const OnboardingWrapper: React.FC<props> = ({ children }) => {
   return (
     <div className="h-screen bg-primary text-primary-light flex justify-center items-center">
-      <div className="h-5/6 flex flex-col justify-between items-center">
+      <div className="h-5/6 w-full flex flex-col justify-between items-center">
         <Header />
 
-        <div>{children}</div>
+        <div className="h-full w-full">{children}</div>
 
         <Footer />
       </div>
