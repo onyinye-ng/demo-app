@@ -1,6 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import logo from "../../assets/logo3.svg"
+import { StatusBar } from "./StatusBar"
 
 const Header: React.FC<{}> = () => {
   return (
@@ -32,6 +33,7 @@ export const OnboardingWrapper: React.FC<props> = ({ children }) => {
   return (
     <div className="h-screen bg-primary text-primary-light flex justify-center items-center">
       <div className="h-5/6 w-full flex flex-col justify-between items-center">
+        <StatusBar />
         <Header />
 
         <div className="h-full w-full">{children}</div>
