@@ -1,6 +1,7 @@
 import create from "zustand"
 import { devtools, persist } from "zustand/middleware"
-import { appId } from "../utils"
+import axios from "axios"
+import { apiDomain, appId } from "../utils"
 
 export interface User {
   id: string
@@ -11,7 +12,7 @@ export interface User {
 }
 export interface Business {}
 export type RegisterCredentials = {
-  businessEmail: string
+  businessName: string
   email: string
   telephone: string
   subscribe: boolean
@@ -50,7 +51,9 @@ export const useAccountStore = create<AccountState & AccountMethods>()(
             user: undefined,
           })
         },
-        registerBusiness: async (credentials) => {},
+        registerBusiness: async (credentials) => {
+          return axios.post(`${apiDomain}/account/register`, credentials)
+        },
         login: async (credentials) => {},
         logout: () => {},
       }),

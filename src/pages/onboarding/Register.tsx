@@ -2,13 +2,16 @@ import React, { FormEvent, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { OnboardingWrapper } from "../../components"
 import { Button, CheckboxInput, Input, Label } from "../../components/forms"
+import { RegisterCredentials, useAccountStore } from "../../stores"
 
 export const Register: React.FC<{}> = () => {
   const navigate = useNavigate()
-  const [credentials, setCredentials] = useState({
+  const { registerBusiness } = useAccountStore()
+  const [credentials, setCredentials] = useState<RegisterCredentials>({
     businessName: "",
     email: "",
     telephone: "",
+    subscribe: true,
   })
 
   const handleChange = (field: string, value: string | boolean) => {
@@ -18,10 +21,18 @@ export const Register: React.FC<{}> = () => {
     })
   }
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-
-    navigate("/dashboard")
+    try {
+      const resp = await registerBusiness(credentials)
+      console.log(resp)
+      if (resp.status === true) {
+        alert(resp.message)
+        navigate("/dashboard")
+      }
+    } catch (error: any) {
+      alert(error.message)
+    }
   }
 
   return (
@@ -37,22 +48,22 @@ export const Register: React.FC<{}> = () => {
             <div className="w-full flex flex-col gap-1">
               <Label htmlFor="businessName">Business Name</Label>
               <Input
-                onChange={(e) => handleChange("businessName", e.target.value)}
-                value={credentials.businessName}
                 id="businessName"
-                autoComplete="off"
-                placeholder="ex. XYZ Company"
+                defaultValue={credentials.businessName}
+                onChange={(e) => handleChange("businessName", e.target.value)}
+                autoComplete="name"
                 required
+                placeholder="ex. XYZ Company"
               />
             </div>
 
             <div className="w-full flex flex-col gap-1">
               <Label htmlFor="email">Business Email</Label>
               <Input
-                onChange={(e) => handleChange("email", e.target.value)}
-                type="text"
-                value={credentials.email}
+                type="email"
                 id="email"
+                defaultValue={credentials.email}
+                onChange={(e) => handleChange("email", e.target.value)}
                 autoComplete="email"
                 required
                 placeholder="ex. xyz.company@example.com"
@@ -62,10 +73,10 @@ export const Register: React.FC<{}> = () => {
             <div className="w-full flex flex-col gap-1">
               <Label htmlFor="telephone">Business Telephone</Label>
               <Input
-                onChange={(e) => handleChange("telephone", e.target.value)}
-                type="text"
-                value={credentials.telephone}
+                type="tel"
                 id="telephone"
+                defaultValue={credentials.telephone}
+                onChange={(e) => handleChange("telephone", e.target.value)}
                 autoComplete="tel"
                 required
                 placeholder="ex. +234"
@@ -76,6 +87,7 @@ export const Register: React.FC<{}> = () => {
               <CheckboxInput
                 type="checkbox"
                 required
+                defaultChecked={credentials.subscribe}
                 id="suscribe"
                 onChange={(e) => handleChange("suscribe", e.target.checked)}
               />
