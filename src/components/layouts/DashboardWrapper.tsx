@@ -1,6 +1,7 @@
 import React from "react"
 import { Link, useLocation } from "react-router-dom"
 import logo from "../../assets/logo.svg"
+import { StatusBar } from "./StatusBar"
 
 const Header: React.FC<{}> = () => {
   const { pathname } = useLocation()
@@ -57,14 +58,13 @@ const Footer: React.FC<{}> = () => {
 
 type props = {
   children: JSX.Element | JSX.Element[]
-  noContainer?: boolean
-  className?: string
 }
 
 export const DashboardWrapper: React.FC<props> = ({ children }) => {
   return (
     <div className="h-screen bg-primary-light text-grey-dark overflow-auto">
       <div className="container mx-auto h-full">
+        <StatusBar />
         <Header />
 
         <div className="h-[90%]">

@@ -1,3 +1,5 @@
+import { useStatusStore } from "../../stores"
+
 /**
  * An optimized input.
  *
@@ -5,10 +7,12 @@
  * @returns button
  */
 export const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (props) => {
+  const { isLoading } = useStatusStore()
   return (
     <input
       type={props.type ?? "text"}
       {...props}
+      disabled={isLoading}
       className={`rounded-sm w-full py-2 px-3 placeholder:text-grey text-grey-dark focus:outline-none focus:shadow-none ${props.className}`}
     />
   )
@@ -21,10 +25,12 @@ export const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (pro
  * @returns textarea
  */
 export const TextareaInput: React.FC<React.InputHTMLAttributes<HTMLTextAreaElement>> = (props) => {
+  const { isLoading } = useStatusStore()
   return (
     <textarea
       rows={2}
       {...props}
+      disabled={isLoading}
       className={`rounded-sm w-full py-2 px-3 placeholder:text-grey text-grey-dark focus:outline-none focus:shadow-none ${props.className}`}
     />
   )
@@ -37,9 +43,11 @@ export const TextareaInput: React.FC<React.InputHTMLAttributes<HTMLTextAreaEleme
  * @returns checkbox
  */
 export const CheckboxInput: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (props) => {
+  const { isLoading } = useStatusStore()
   return (
     <input
       {...props}
+      disabled={isLoading}
       type={props.type ?? "checkbox"}
       className={`p-2 border-primary-dark text-primary-dark checked:bg-primary checked:text-primary-light focus:outline-none focus:shadow-none hover:opacity-90 ${props.className}`}
     />
