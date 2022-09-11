@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/24/solid"
 import React from "react"
 import { Toast, useStatusStore } from "../../stores"
-import { Button, IconButton } from "../forms"
+import { Button, IconButton } from "../"
 
 export const LoadingIndicator: React.FC<{ borderColor: string }> = ({ borderColor }) => {
   return (

@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom"
 import logo from "../../assets/logo.svg"
 import { StatusBar } from "./StatusBar"
 import { useState } from "react"
-import { IconButton } from "../forms"
+import { IconButton } from "../"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid"
 
 const Header: React.FC<{}> = () => {
