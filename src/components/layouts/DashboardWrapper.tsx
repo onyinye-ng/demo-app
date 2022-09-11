@@ -3,10 +3,13 @@ import { Link, useLocation } from "react-router-dom"
 import logo from "../../assets/logo.svg"
 import { StatusBar } from "./StatusBar"
 import { useState } from "react"
+import { IconButton } from "../forms"
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid"
 
 const Header: React.FC<{}> = () => {
   const { pathname } = useLocation()
-  const [isNavOpen, setIsNavOpen] = useState(false)
+  const [navOpen, setNavOpen] = useState(false)
+
   return (
     <div className="flex items-center justify-between py-6 px-3 container mx-auto">
       <Link to="/">
@@ -16,126 +19,66 @@ const Header: React.FC<{}> = () => {
           className="lg:w-40 w-32"
         />
       </Link>
-      <nav>
-        <section className="MOBILE-MENU flex lg:hidden">
-          <div
-            className="HAMBURGER-ICON space-y-2"
-            onClick={() => setIsNavOpen((prev) => !prev)}
-          >
-            <span className="block h-0.5 w-8 animate-pulse bg-primary-dark"></span>
-            <span className="block h-0.5 w-8 animate-pulse bg-primary-dark"></span>
-            <span className="block h-0.5 w-8 animate-pulse bg-primary-dark"></span>
-          </div>
 
-          <div className={isNavOpen ? "showMenuNav" : "hideMenuNav"}>
-            <div
-              className="absolute top-0 right-0 px-8 py-8"
-              onClick={() => setIsNavOpen(false)}
-            >
-              <svg
-                className="h-8 w-8 text-gray-600"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line
-                  x1="18"
-                  y1="6"
-                  x2="6"
-                  y2="18"
-                />
-                <line
-                  x1="6"
-                  y1="6"
-                  x2="18"
-                  y2="18"
-                />
-              </svg>
-            </div>
-            <ul className="flex flex-col items-center justify-between min-h-[250px]">
-              <Link
-                to="/dashboard"
-                className={`${
-                  pathname === "/dashboard"
-                    ? "border-primary border-b border-gray-400 my-8 uppercase"
-                    : "border-transparent border-b border-gray-400 my-8 uppercase"
-                } hover:border-primary border-b-4 rounded-sm p-2`}
-              >
-                Cards
-              </Link>
-              <Link
-                to="/dashboard/activate"
-                className={`${
-                  pathname === "/dashboard/activate"
-                    ? "border-primary border-b border-gray-400 my-8 uppercase"
-                    : "border-transparent border-b border-gray-400 my-8 uppercase"
-                } hover:border-primary border-b-4 rounded-sm p-2`}
-              >
-                Activate Card
-              </Link>
-              <Link
-                to="/dashboard/payment"
-                className={`${
-                  pathname === "/dashboard/payment"
-                    ? "border-primary border-b border-gray-400 my-8 uppercase"
-                    : "border-transparent border-b border-gray-400 my-8 uppercase"
-                } hover:border-primary border-b-4 rounded-sm p-2`}
-              >
-                Receive Payment
-              </Link>
-            </ul>
-          </div>
-        </section>
+      <IconButton
+        title="toggle-menu"
+        className="block md:hidden hover:bg-grey-light hover:bg-opacity-50"
+        onClick={() => setNavOpen(true)}
+      >
+        <Bars3Icon className="w-8 h-8" />
+      </IconButton>
 
-        <ul className="DESKTOP-MENU hidden space-x-8 lg:flex">
-          <Link
-            to="/dashboard"
-            className={`${
-              pathname === "/dashboard" ? "border-primary" : "border-transparent "
-            } hover:border-primary border-b-4 rounded-sm p-2`}
+      <div
+        className={`${
+          navOpen === true
+            ? "show absolute top-0 bottom-0 left-0 right-0 flex flex-col justify-start gap-10 pt-40 p-20 md:hidden bg-primary-light z-10"
+            : "hidden md:flex md:flex-row md:gap-10"
+        }`}
+      >
+        {navOpen && (
+          <IconButton
+            title="toggle-menu"
+            className="block absolute top-6 right-6 md:hidden w-fit hover:bg-grey-light hover:bg-opacity-50"
+            onClick={() => setNavOpen(false)}
           >
-            Cards
-          </Link>
-          <Link
-            to="/dashboard/activate"
-            className={`${
-              pathname === "/dashboard/activate" ? "border-primary" : "border-transparent "
-            } hover:border-primary border-b-4 rounded-sm p-2`}
-          >
-            Activate Card
-          </Link>
-          <Link
-            to="/dashboard/payment"
-            className={`${
-              pathname === "/dashboard/payment" ? "border-primary" : "border-transparent "
-            } hover:border-primary border-b-4 rounded-sm p-2`}
-          >
-            Receive Payment
-          </Link>
-        </ul>
-      </nav>
-      <style>{`
-      .hideMenuNav {
-        display: none;
-      }
-      .showMenuNav {
-        display: block;
-        position: absolute;
-        width: 100%;
-        height: 100vh;
-        top: 0;
-        left: 0;
-        background: #eff4ff;
-        z-index: 10;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
-      }
-    `}</style>
+            <XMarkIcon className="w-8 h-8" />
+          </IconButton>
+        )}
+
+        <Link
+          to="/dashboard"
+          onClick={() => {
+            navOpen === true && setNavOpen(false)
+          }}
+          className={`${
+            pathname === "/dashboard" ? "border-primary" : "border-transparent "
+          } hover:border-primary border-b-4 rounded-sm p-2`}
+        >
+          Cards
+        </Link>
+        <Link
+          to="/dashboard/activate"
+          onClick={() => {
+            navOpen === true && setNavOpen(false)
+          }}
+          className={`${
+            pathname === "/dashboard/activate" ? "border-primary" : "border-transparent "
+          } hover:border-primary border-b-4 rounded-sm p-2`}
+        >
+          Activate Card
+        </Link>
+        <Link
+          to="/dashboard/payment"
+          onClick={() => {
+            navOpen === true && setNavOpen(false)
+          }}
+          className={`${
+            pathname === "/dashboard/payment" ? "border-primary" : "border-transparent "
+          } hover:border-primary border-b-4 rounded-sm p-2`}
+        >
+          Receive Payment
+        </Link>
+      </div>
     </div>
   )
 }
