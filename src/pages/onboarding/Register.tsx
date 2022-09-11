@@ -1,7 +1,6 @@
 import React, { FormEvent, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { OnboardingWrapper } from "../../components"
-import { Button, CheckboxInput, Input, Label } from "../../components/forms"
+import { OnboardingWrapper, Button, CheckboxInput, Input, Label } from "../../components"
 import { RegisterCredentials, useAccountStore, useStatusStore } from "../../stores"
 
 export const Register: React.FC<{}> = () => {
