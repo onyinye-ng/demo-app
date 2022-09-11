@@ -2,16 +2,17 @@ import React, { FormEvent, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { OnboardingWrapper } from "../../components"
 import { Button, CheckboxInput, Input, Label } from "../../components/forms"
-import { RegisterCredentials, useAccountStore } from "../../stores"
+import { RegisterCredentials, useAccountStore, useStatusStore } from "../../stores"
 
 export const Register: React.FC<{}> = () => {
   const navigate = useNavigate()
   const { registerBusiness } = useAccountStore()
+  const { loading, toast } = useStatusStore()
   const [credentials, setCredentials] = useState<RegisterCredentials>({
     businessName: "",
     email: "",
     telephone: "",
-    subscribe: true,
+    subscribe: false,
   })
 
   const handleChange = (field: string, value: string | boolean) => {
@@ -23,15 +24,20 @@ export const Register: React.FC<{}> = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    loading(true, "Submitting...", "border-secondary")
     try {
       const resp = await registerBusiness(credentials)
+      loading(false)
       console.log(resp)
       if (resp.status === true) {
-        alert(resp.message)
+        toast.success(resp.message)
         navigate("/dashboard")
+      } else {
+        toast.error(resp.message, false)
       }
     } catch (error: any) {
-      alert(error.message)
+      loading(false)
+      toast.error(error.message, false)
     }
   }
 
@@ -88,11 +94,11 @@ export const Register: React.FC<{}> = () => {
                 type="checkbox"
                 required
                 defaultChecked={credentials.subscribe}
-                id="suscribe"
-                onChange={(e) => handleChange("suscribe", e.target.checked)}
+                id="subscribe"
+                onChange={(e) => handleChange("subscribe", e.target.checked)}
               />
               <Label
-                htmlFor="suscribe"
+                htmlFor="subscribe"
                 className="m-0"
               >
                 Subscribe to our newsletter

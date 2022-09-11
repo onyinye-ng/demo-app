@@ -52,7 +52,20 @@ export const useAccountStore = create<AccountState & AccountMethods>()(
           })
         },
         registerBusiness: async (credentials) => {
-          return axios.post(`${apiDomain}/account/register`, credentials)
+          try {
+            return await axios.post(`${apiDomain}/account/register`, credentials).then((res) => {
+              set({
+                authenticated: true,
+                authToken: res.data.data.authToken,
+                user: res.data.data.user,
+                business: res.data.data.business,
+              })
+              return res.data
+            })
+          } catch (error: any) {
+            console.log(error.response.data)
+            return error.response.data
+          }
         },
         login: async (credentials) => {},
         logout: () => {},
