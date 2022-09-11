@@ -49,6 +49,7 @@ export const useAccountStore = create<AccountState & AccountMethods>()(
             authenticated: false,
             authToken: undefined,
             user: undefined,
+            business: undefined,
           })
         },
         registerBusiness: async (credentials) => {
@@ -83,7 +84,9 @@ export const useAccountStore = create<AccountState & AccountMethods>()(
             return error.response.data
           }
         },
-        logout: () => {},
+        logout: () => {
+          get().restoreDefault()
+        },
       }),
       {
         name: `${appId}.account`,
