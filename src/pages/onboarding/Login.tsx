@@ -1,48 +1,93 @@
-import React from "react"
-import { Link } from "react-router-dom"
-import { OnboardingWrapper } from "../../components"
+import React, { FormEvent, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { OnboardingWrapper, Button, Input, Label, TextLink } from "../../components"
+import { useAccountStore, useStatusStore } from "../../stores"
 
 export const Login: React.FC<{}> = () => {
+  const navigate = useNavigate()
+  const { login } = useAccountStore()
+  const { loading, toast } = useStatusStore()
+  const [credentials, setCredentials] = useState({
+    email: "",
+    telephone: "",
+  })
+
+  const handleChange = (field: string, value: string | boolean) => {
+    setCredentials({
+      ...credentials,
+      [field]: value,
+    })
+  }
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    loading(true, "Submitting...", "border-secondary")
+    try {
+      const resp = await login(credentials)
+      loading(false)
+      console.log(resp)
+      if (resp.status === true) {
+        toast.success(resp.message)
+        navigate("/dashboard")
+      } else {
+        toast.error(resp.message, false)
+      }
+    } catch (error: any) {
+      loading(false)
+      toast.error(error.message, false)
+    }
+  }
+
   return (
     <OnboardingWrapper>
-      <div className="flex items-center justify-center w-full h-full">
-        <div className="w-64 md:w-96 lg:w-80 bord er rounded-md p-8">
-          <div className="text-center pb-4 text-2xl">
-            <h3>Sign in</h3>
-          </div>
-          <div>
-            <form className="flex flex-col gap-4">
-              <div>
-                <div className="pb-3">
-                  <label htmlFor="email">Email Address</label>
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    name="email"
-                    placeholder="Email Address"
-                    className="p-2 border rounded-sm w-full text-grey-dark bg-primary-light"
-                  />
-                </div>
-              </div>
-              <div>
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="bg-primary-light"
-                />
-                <label htmlFor="remember"> Remember Me</label>
-              </div>
-              <div className="text-center">
-                <button
-                  type="submit"
-                  className="rounded-md py-2 w-full bg-primary-dark hover:opacity-90 text-primary-light"
-                >
-                  Sign In
-                </button>
-              </div>
-            </form>
-          </div>
+      <div className="h-3/4 w-5/6 md:w-6/12 md:min-w-fit lg:w-3/12 lg:min-w-fit mx-auto">
+        <div className="mt-14 flex flex-col gap-4 justify-start">
+          <h3 className="text-3xl w-full text-center">Log in to Demo</h3>
+
+          <form
+            onSubmit={handleSubmit}
+            className="w-full h-full flex flex-col gap-3"
+          >
+            <div className="w-full flex flex-col gap-1">
+              <Label htmlFor="email">Business Email</Label>
+              <Input
+                type="email"
+                id="email"
+                defaultValue={credentials.email}
+                onChange={(e) => handleChange("email", e.target.value)}
+                autoComplete="email"
+                required
+                placeholder="ex. xyz.company@example.com"
+              />
+            </div>
+
+            <div className="w-full flex flex-col gap-1">
+              <Label htmlFor="telephone">Business Telephone</Label>
+              <Input
+                type="tel"
+                id="telephone"
+                defaultValue={credentials.telephone}
+                onChange={(e) => handleChange("telephone", e.target.value)}
+                autoComplete="tel"
+                required
+                placeholder="ex. +234"
+              />
+            </div>
+
+            <Button
+              title="Register"
+              type="submit"
+              className="mt-5 p-2 bg-secondary text-grey-dark"
+            >
+              Login
+            </Button>
+            <TextLink
+              title="goto-register"
+              to="/register"
+            >
+              Register business instead.
+            </TextLink>
+          </form>
         </div>
       </div>
     </OnboardingWrapper>
