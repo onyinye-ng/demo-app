@@ -1,19 +1,20 @@
 import React from "react"
 import { DashboardWrapper } from "../../components"
 import { Link, useLocation } from "react-router-dom"
-import { Button } from "../../components"
 import logo from "../../assets/logo3.svg"
 
 export const CardDetails: React.FC<{}> = () => {
   const location = useLocation()
   const { card_detail } = location.state as any
-  //   this is just to get the amount, convert to integer and substract a certern amount, to get card balance
+  // this is just to get the amount, convert to integer and substract a certern amount, to get card balance
+  // this code will go out in production
   const card_amt = card_detail.amount
   const amount_str = card_amt.replace(",", "")
   const new_amt = parseInt(amount_str) - 5400
-  const cardBalance = new_amt
+  const new_amt_str = new_amt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+  const cardBalance = new_amt_str
 
-  // Use the card ID to get the card operations, use fetch api in this case
+  // Use the card ID to get the card operations, use fetch api in this case and replace below card operations
   const cardOperations = [
     {
       cardId: card_detail.id,
@@ -76,7 +77,10 @@ export const CardDetails: React.FC<{}> = () => {
               </div>
               <div className="flex justify-center ... items-center ... pt-8">
                 <Link
-                  to="/register"
+                  to={{
+                    pathname: `.`,
+                  }}
+                  state={{ card_detail: card_detail }}
                   className="p-3 px-6 text-center rounded-md hover:opacity-90 bg-danger text-white"
                 >
                   Destroy Card
@@ -111,7 +115,7 @@ export const CardDetails: React.FC<{}> = () => {
                     {cardOperation.operation_type}{" "}
                     <span
                       className={`${
-                        cardOperation.status == "success" ? `bg-success-light` : `bg-danger-light`
+                        cardOperation.status === "success" ? `bg-success-light` : `bg-danger-light`
                       }  text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ml-3`}
                     >
                       {cardOperation.status}
