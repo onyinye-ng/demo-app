@@ -4,7 +4,7 @@ import { devtools } from "zustand/middleware"
 export interface Toast {
   id: string
   message: JSX.Element | string
-  color?: "success" | "danger" | "warning"
+  color?: string
   autohide?: number | boolean
 }
 
@@ -26,6 +26,7 @@ interface StatusState {
   confirmProps?: {
     message: Confirm["message"]
     color: string
+    colorAlt: string
     action: Confirm["action"]
     onConfirm?: Confirm["onConfirm"]
     onCancel?: Confirm["onCancel"]
@@ -115,7 +116,12 @@ export const useStatusStore = create<StatusState & StatusMethods>()(
       const toast = {
         id: toastId,
         message,
-        color: color ?? "success",
+        color:
+          color === "success"
+            ? "bg-success-light text-success"
+            : color === "danger"
+            ? "bg-danger-light text-danger"
+            : "bg-warning-light text-warning",
       }
 
       set({
@@ -146,8 +152,19 @@ export const useStatusStore = create<StatusState & StatusMethods>()(
       console.log(onConfirm, onCancel)
       set({
         confirmProps: {
+          color:
+            color === "success"
+              ? "bg-success-light text-success"
+              : color === "danger"
+              ? "bg-danger-light text-danger"
+              : "bg-warning-light text-warning",
+          colorAlt:
+            color === "success"
+              ? "bg-success text-success-light"
+              : color === "danger"
+              ? "bg-danger text-danger-light"
+              : "bg-warning text-warning-light",
           message,
-          color,
           action,
           onConfirm: onConfirm === undefined ? async () => {} : onConfirm,
           onCancel: onCancel === undefined ? async () => {} : onCancel,

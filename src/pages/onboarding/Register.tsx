@@ -2,13 +2,17 @@ import React, { FormEvent, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { OnboardingWrapper } from "../../components"
 import { Button, CheckboxInput, Input, Label } from "../../components/forms"
+import { RegisterCredentials, useAccountStore, useStatusStore } from "../../stores"
 
 export const Register: React.FC<{}> = () => {
   const navigate = useNavigate()
-  const [credentials, setCredentials] = useState({
+  const { registerBusiness } = useAccountStore()
+  const { loading, toast } = useStatusStore()
+  const [credentials, setCredentials] = useState<RegisterCredentials>({
     businessName: "",
     email: "",
     telephone: "",
+    subscribe: false,
   })
 
   const handleChange = (field: string, value: string | boolean) => {
@@ -18,10 +22,23 @@ export const Register: React.FC<{}> = () => {
     })
   }
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-
-    navigate("/dashboard")
+    loading(true, "Submitting...", "border-secondary")
+    try {
+      const resp = await registerBusiness(credentials)
+      loading(false)
+      console.log(resp)
+      if (resp.status === true) {
+        toast.success(resp.message)
+        navigate("/dashboard")
+      } else {
+        toast.error(resp.message, false)
+      }
+    } catch (error: any) {
+      loading(false)
+      toast.error(error.message, false)
+    }
   }
 
   return (
@@ -37,22 +54,22 @@ export const Register: React.FC<{}> = () => {
             <div className="w-full flex flex-col gap-1">
               <Label htmlFor="businessName">Business Name</Label>
               <Input
-                onChange={(e) => handleChange("businessName", e.target.value)}
-                value={credentials.businessName}
                 id="businessName"
-                autoComplete="off"
-                placeholder="ex. XYZ Company"
+                defaultValue={credentials.businessName}
+                onChange={(e) => handleChange("businessName", e.target.value)}
+                autoComplete="name"
                 required
+                placeholder="ex. XYZ Company"
               />
             </div>
 
             <div className="w-full flex flex-col gap-1">
               <Label htmlFor="email">Business Email</Label>
               <Input
-                onChange={(e) => handleChange("email", e.target.value)}
-                type="text"
-                value={credentials.email}
+                type="email"
                 id="email"
+                defaultValue={credentials.email}
+                onChange={(e) => handleChange("email", e.target.value)}
                 autoComplete="email"
                 required
                 placeholder="ex. xyz.company@example.com"
@@ -62,10 +79,10 @@ export const Register: React.FC<{}> = () => {
             <div className="w-full flex flex-col gap-1">
               <Label htmlFor="telephone">Business Telephone</Label>
               <Input
-                onChange={(e) => handleChange("telephone", e.target.value)}
-                type="text"
-                value={credentials.telephone}
+                type="tel"
                 id="telephone"
+                defaultValue={credentials.telephone}
+                onChange={(e) => handleChange("telephone", e.target.value)}
                 autoComplete="tel"
                 required
                 placeholder="ex. +234"
@@ -76,11 +93,12 @@ export const Register: React.FC<{}> = () => {
               <CheckboxInput
                 type="checkbox"
                 required
-                id="suscribe"
-                onChange={(e) => handleChange("suscribe", e.target.checked)}
+                defaultChecked={credentials.subscribe}
+                id="subscribe"
+                onChange={(e) => handleChange("subscribe", e.target.checked)}
               />
               <Label
-                htmlFor="suscribe"
+                htmlFor="subscribe"
                 className="m-0"
               >
                 Subscribe to our newsletter
