@@ -33,7 +33,7 @@ function App() {
             element={<ReceivePayment />}
           />
           <Route
-            path="/dashboard/cardDetails"
+            path="/dashboard/:id"
             element={<CardDetails />}
           />
         </Routes>
