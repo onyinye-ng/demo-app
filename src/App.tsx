@@ -1,6 +1,7 @@
 import { Suspense } from "react"
 import { Route, Routes } from "react-router-dom"
 import { Dashboard, Login, ReceivePayment, Register, Welcome } from "./pages"
+import { CardDetails } from "./pages/dashboard/CardDetails"
 
 function App() {
   return (
@@ -30,6 +31,10 @@ function App() {
           <Route
             path="/dashboard/payment"
             element={<ReceivePayment />}
+          />
+          <Route
+            path="/dashboard/:id"
+            element={<CardDetails />}
           />
         </Routes>
       </Suspense>

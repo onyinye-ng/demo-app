@@ -4,9 +4,11 @@ import { appId } from "../utils"
 
 export interface Card {
   id: string
-  email: string
-  telephone: string
-  role: "user" | "admin"
+  business: string
+  amount: number
+  balance: number
+  couponCode: string
+  status: "active" | "inactive" | "used" | "destroyed"
   created: string
 }
 export type ActivateCardCredentials = {

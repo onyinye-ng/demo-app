@@ -3,7 +3,6 @@ const colors = require("tailwindcss/colors")
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
-  plugins: [],
   theme: {
     colors: {
       primary: "#005f94",

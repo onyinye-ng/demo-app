@@ -1,5 +1,13 @@
 import React, { FormEvent, useState } from "react"
-import { Button, CheckboxInput, DashboardWrapper, Input, Label, QRScanner } from "../../components"
+import {
+  Button,
+  CheckboxInput,
+  DashboardWrapper,
+  Input,
+  Label,
+  PrefixInput,
+  QRScanner,
+} from "../../components"
 import { useStatusStore } from "../../stores"
 
 export const ReceivePayment: React.FC<{}> = () => {
@@ -61,7 +69,7 @@ export const ReceivePayment: React.FC<{}> = () => {
             >
               <div className="w-full flex flex-col gap-1">
                 <Label htmlFor="amount">Amount</Label>
-                <Input
+                <PrefixInput
                   id="amount"
                   type="number"
                   min={1}
@@ -70,6 +78,8 @@ export const ReceivePayment: React.FC<{}> = () => {
                   className="border border-grey-light"
                   required
                   placeholder="ex. 500"
+                  prefixElem={<span className="text-grey-dark">NGN</span>}
+                  // &#8358;
                 />
               </div>
 
