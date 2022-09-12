@@ -21,6 +21,7 @@ interface StatusState {
   loadingProps: {
     message?: string
     borderColor?: string
+    bgColor?: string
   }
   toastList: Toast[]
   confirmProps?: {
@@ -37,7 +38,8 @@ interface StatusMethods {
   loading: (
     state: boolean,
     message?: StatusState["loadingProps"]["message"],
-    borderColor?: StatusState["loadingProps"]["borderColor"]
+    borderColor?: StatusState["loadingProps"]["borderColor"],
+    bgColor?: StatusState["loadingProps"]["bgColor"]
   ) => void
   toastMachine: (
     message: Toast["message"],
@@ -88,12 +90,13 @@ export const useStatusStore = create<StatusState & StatusMethods>()(
       message: "Loading...",
       borderColor: "border-primary-light",
     },
-    loading: (state, message = "Processing...", borderColor) => {
+    loading: (state, message = "Processing...", borderColor, bgColor) => {
       set({
         isLoading: state,
         loadingProps: {
           message,
           borderColor,
+          bgColor,
         },
       })
     },
@@ -149,7 +152,6 @@ export const useStatusStore = create<StatusState & StatusMethods>()(
         get().confirmMachine(message, "warning", action, onConfirm, onCancel),
     },
     confirmMachine: (message, color, action, onConfirm, onCancel) => {
-      console.log(onConfirm, onCancel)
       set({
         confirmProps: {
           color:

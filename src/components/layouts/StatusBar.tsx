@@ -26,7 +26,9 @@ export const StatusBar: React.FC<{}> = () => {
   return (
     <>
       {isLoading === true ? (
-        <div className="absolute z-50 h-[5%] top-3 left-3 right-3 flex justify-between">
+        <div
+          className={`absolute ${loadingProps.bgColor} z-50 h-[5%] top-3 left-3 right-3 flex justify-between`}
+        >
           <div className="h-full w-fit p-3 flex items-center gap-2 text-primary-light">
             <LoadingIndicator borderColor={loadingProps.borderColor!} />
             <span>{loadingProps.message}</span>
@@ -38,7 +40,7 @@ export const StatusBar: React.FC<{}> = () => {
 
       {toastList.length > 0 && (
         <div
-          className={`absolute z-50 flex flex-col gap-3 min-w-fit w-[95%] md:w-[40%] lg:w-[20%] top-0 right-0 ${
+          className={`absolute z-50 h-fit flex flex-col gap-3 w-[90%] md:w-[40%] lg:w-[20%] top-0 right-0 ${
             toastList.length > 0 && "p-3 h-screen overflow-y-clip"
           }`}
         >
