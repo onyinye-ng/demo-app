@@ -23,7 +23,7 @@ const Header: React.FC<{}> = () => {
   }
 
   return (
-    <div className="flex items-center justify-between py-6 px-3 container mx-auto">
+    <div className="h-[10%] flex items-center justify-between py-6 px-3 container mx-auto">
       <Link to="/">
         <img
           src={logo}
