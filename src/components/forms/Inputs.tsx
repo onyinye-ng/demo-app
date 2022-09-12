@@ -4,7 +4,7 @@ import { useStatusStore } from "../../stores"
  * An optimized input.
  *
  * @param props
- * @returns button
+ * @returns input
  */
 export const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (props) => {
   const { isLoading } = useStatusStore()
@@ -15,6 +15,35 @@ export const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (pro
       disabled={isLoading}
       className={`rounded-sm w-full py-2 px-3 placeholder:text-grey text-grey-dark focus:outline-none focus:shadow-none ${props.className}`}
     />
+  )
+}
+
+type Props = {
+  prefixElem: JSX.Element
+}
+
+/**
+ * An optimized input.
+ *
+ * @param props
+ * @returns input
+ */
+export const PrefixInput: React.FC<React.InputHTMLAttributes<HTMLInputElement> & Props> = (
+  props
+) => {
+  const { isLoading } = useStatusStore()
+  return (
+    <div
+      className={`rounded-sm w-full py-2 px-3 bg-white placeholder:text-grey text-grey-dark focus:outline-none focus:shadow-none flex justify-between ${props.className}`}
+    >
+      <div className="">{props.prefixElem}</div>
+      <input
+        type={props.type ?? "text"}
+        {...props}
+        disabled={isLoading}
+        className={`w-full pl-3 border-none placeholder:text-grey text-grey-dark focus:outline-none focus:shadow-none ${props.className}`}
+      />
+    </div>
   )
 }
 
