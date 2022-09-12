@@ -21,7 +21,7 @@ export const Login: React.FC<{}> = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    loading(true, "Submitting...", "border-secondary")
+    loading(true, "Logging in...", "border-secondary")
     try {
       const resp = await login(credentials)
       loading(false)
@@ -42,7 +42,7 @@ export const Login: React.FC<{}> = () => {
     <OnboardingWrapper>
       <div className="h-3/4 w-5/6 md:w-6/12 md:min-w-fit lg:w-3/12 lg:min-w-fit mx-auto">
         <div className="mt-14 flex flex-col gap-4 justify-start">
-          <h3 className="text-3xl w-full text-center">Log in to Demo</h3>
+          <h3 className="text-3xl w-full text-center font-medium">Log in to Business</h3>
 
           <form
             onSubmit={handleSubmit}
@@ -77,15 +77,17 @@ export const Login: React.FC<{}> = () => {
             <Button
               title="Register"
               type="submit"
-              className="mt-5 p-2 bg-secondary text-grey-dark"
+              className="mt-4 p-2 bg-secondary text-grey-dark"
             >
               Login
             </Button>
+
             <TextLink
               title="goto-register"
               to="/register"
+              className="text-center"
             >
-              Register business instead.
+              Register business instead
             </TextLink>
           </form>
         </div>

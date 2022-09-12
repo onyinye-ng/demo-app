@@ -1,17 +1,29 @@
 import React from "react"
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import logo from "../../assets/logo.svg"
 import { StatusBar } from "./StatusBar"
 import { useState } from "react"
-import { IconButton } from "../"
+import { IconButton, TextButton } from "../"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid"
+import { useAccountStore, useStatusStore } from "../../stores"
 
 const Header: React.FC<{}> = () => {
   const { pathname } = useLocation()
   const [navOpen, setNavOpen] = useState(false)
+  const { confirm, closeConfirm } = useStatusStore()
+  const { logout } = useAccountStore()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    confirm.error("Are you sure you want to logout?", "Log out", async () => {
+      logout()
+      closeConfirm()
+      navigate("/login")
+    })
+  }
 
   return (
-    <div className="flex items-center justify-between py-6 px-3 container mx-auto">
+    <div className="h-[10%] flex items-center justify-between py-6 px-3 container mx-auto">
       <Link to="/">
         <img
           src={logo}
@@ -78,6 +90,16 @@ const Header: React.FC<{}> = () => {
         >
           Receive Payment
         </Link>
+        <TextButton
+          title="logout"
+          onClick={() => {
+            handleLogout()
+            navOpen === true && setNavOpen(false)
+          }}
+          className={`border-transparent text-start focus:no-underline active:no-underline text-danger hover:border-danger border-b-4 rounded-sm p-2`}
+        >
+          Log Out
+        </TextButton>
       </div>
     </div>
   )
