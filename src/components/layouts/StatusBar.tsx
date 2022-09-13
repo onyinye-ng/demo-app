@@ -57,13 +57,17 @@ export const StatusBar: React.FC<{}> = () => {
                 >
                   <XMarkIcon className="w-5" />
                 </IconButton>
-                {toast.color === "success" ? (
+
+                {toast.color?.includes("success") === true && (
                   <CheckCircleIcon className="w-7 h-7 min-w-min" />
-                ) : toast.color === "danger" ? (
+                )}
+                {toast.color?.includes("danger") === true && (
                   <XCircleIcon className="w-7 h-7 min-w-min" />
-                ) : (
+                )}
+                {toast.color?.includes("warning") === true && (
                   <ExclamationCircleIcon className="w-7 h-7 min-w-min" />
                 )}
+
                 <span className="mt-0.5">{toast.message}</span>
               </div>
             ))}

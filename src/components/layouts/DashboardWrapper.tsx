@@ -58,12 +58,12 @@ const Header: React.FC<{}> = () => {
         )}
 
         <Link
-          to="/dashboard"
+          to="/dashboard/cards"
           onClick={() => {
             navOpen === true && setNavOpen(false)
           }}
           className={`${
-            pathname === "/dashboard" ? "border-primary" : "border-transparent "
+            pathname === "/dashboard/cards" ? "border-primary" : "border-transparent "
           } hover:border-primary border-b-4 rounded-sm p-2`}
         >
           Cards

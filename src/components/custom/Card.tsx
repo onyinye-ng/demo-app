@@ -10,7 +10,7 @@ export const Card: React.FC<{ card: CardType }> = ({ card }) => {
       className="py-1 px-1 h-44 min-w-max w-full md:w-1/2"
     >
       <div className="bg-primary hover:bg-primary-dark w-full h-full rounded-lg relative shadow-sm flex justify-center items-center">
-        <span className="absolute top-0 right-0 m-2 font-medium text-grey-light">
+        <span className="absolute top-0 right-0 mt-2 mr-3 font-medium text-grey-light">
           &#8358;{card.amount}
         </span>
         <img
