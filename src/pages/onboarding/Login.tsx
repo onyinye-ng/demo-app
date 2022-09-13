@@ -25,16 +25,15 @@ export const Login: React.FC<{}> = () => {
     try {
       const resp = await login(credentials)
       loading(false)
-      console.log(resp)
       if (resp.status === true) {
         toast.success(resp.message)
         navigate("/dashboard")
       } else {
-        toast.error(resp.message, false)
+        toast.error(resp.message)
       }
     } catch (error: any) {
       loading(false)
-      toast.error(error.message, false)
+      toast.error(error.message)
     }
   }
 
