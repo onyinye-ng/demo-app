@@ -1,68 +1,42 @@
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from "@heroicons/react/24/solid"
-import React, { FormEvent, useState } from "react"
+import React, { FormEvent, useEffect } from "react"
 import { Card, DashboardWrapper, Label, PrefixInput } from "../../components"
 import { Button } from "../../components"
-import { Card as CardType, useStatusStore } from "../../stores"
+import { useCardStore, useForm, useStatusStore } from "../../stores"
+import { clearInput, once } from "../../utils"
 
-export const Dashboard: React.FC<{}> = () => {
-  const { loading } = useStatusStore()
-  const giftCard: CardType[] = [
-    {
-      id: "12345",
-      business: "12345",
-      amount: 10000,
-      balance: 10000,
-      couponCode: "1234567890AE",
-      status: "inactive",
-      created: Date.now().toString(),
-    },
-    {
-      id: "12345",
-      business: "12345",
-      amount: 10000,
-      balance: 10000,
-      couponCode: "1234567890AE",
-      status: "inactive",
-      created: Date.now().toString(),
-    },
-    {
-      id: "12345",
-      business: "12345",
-      amount: 10000,
-      balance: 10000,
-      couponCode: "1234567890AE",
-      status: "inactive",
-      created: Date.now().toString(),
-    },
-    {
-      id: "12345",
-      business: "12345",
-      amount: 10000,
-      balance: 10000,
-      couponCode: "1234567890AE",
-      status: "inactive",
-      created: Date.now().toString(),
-    },
-  ]
+export const Cards: React.FC<{}> = () => {
+  const { loading, toast } = useStatusStore()
+  const { createCard, cards } = useCardStore()
+  const { credentials, errors, setCredential, setCredentials, setErrors } = useForm()
 
-  const [credentials, setCredentials] = useState({
-    amount: 0,
-    couponCode: "",
-    qrCodeValue: "",
-  })
-
-  const handleChange = (field: string, value: string | boolean) => {
-    console.log(field, value)
-    setCredentials({
-      ...credentials,
-      [field]: value,
+  // set initial credentials
+  useEffect(() => {
+    return once(() => {
+      setCredentials({
+        amount: 0,
+      })
     })
-  }
+  }, [setCredentials])
 
-  const handleSubmit = async (e?: FormEvent) => {
-    e?.preventDefault()
-    console.log(credentials)
-    loading(true, "Making payment...", "border-secondary", "bg-primary-dark")
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    try {
+      loading(true, "Creating card...", "border-secondary", "bg-primary-dark")
+      const resp = await createCard(credentials)
+      loading(false)
+      if (resp.status === true) {
+        clearInput("amount")
+        toast.success(resp.message, false)
+      } else {
+        setErrors(resp.errors)
+        toast.error(resp.message)
+      }
+    } catch (error: any) {
+      loading(false)
+      toast.error(error.message)
+      console.log(error)
+    }
   }
 
   return (
@@ -82,15 +56,16 @@ export const Dashboard: React.FC<{}> = () => {
                 <PrefixInput
                   id="amount"
                   type="number"
-                  min={1}
+                  min={500}
                   defaultValue={credentials.amount}
-                  onChange={(e) => handleChange("amount", e.target.value)}
+                  onChange={(e) => setCredential("amount", e.target.value)}
                   className="border border-grey-light"
                   required
                   placeholder="ex. 500"
                   affix={<span className="text-grey-dark">NGN</span>}
-                  // &#8358;
+                  errors={errors.amount}
                 />
+                <div></div>
               </div>
 
               <Button
@@ -106,8 +81,11 @@ export const Dashboard: React.FC<{}> = () => {
 
             <div className="flex flex-col gap-3 mb-10">
               <div className="w-full bg-scondary-dark flex justify-between flex-wrap gap-0">
-                {giftCard.map((card) => (
-                  <Card card={card!} />
+                {cards.map((card, index) => (
+                  <Card
+                    key={index}
+                    card={card!}
+                  />
                 ))}
               </div>
 
