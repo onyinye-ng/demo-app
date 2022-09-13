@@ -1,7 +1,14 @@
 import { Suspense } from "react"
 import { Route, Routes } from "react-router-dom"
-import { Dashboard, Login, ReceivePayment, Register, Welcome } from "./pages"
-import { CardDetails } from "./pages/dashboard/CardDetails"
+import {
+  CardActivation,
+  CardDetails,
+  Dashboard,
+  Login,
+  ReceivePayment,
+  Register,
+  Welcome,
+} from "./pages"
 
 function App() {
   return (
@@ -26,7 +33,7 @@ function App() {
           />
           <Route
             path="/dashboard/activate"
-            element={<Dashboard />}
+            element={<CardActivation />}
           />
           <Route
             path="/dashboard/payment"
