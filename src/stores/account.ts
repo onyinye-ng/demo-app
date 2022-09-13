@@ -1,7 +1,6 @@
 import create from "zustand"
 import { devtools, persist } from "zustand/middleware"
-import axios from "axios"
-import { apiDomain, appId } from "../utils"
+import { appId, request } from "../utils"
 
 export interface User {
   id: string
@@ -54,34 +53,46 @@ export const useAccountStore = create<AccountState & AccountMethods>()(
         },
         registerBusiness: async (credentials) => {
           try {
-            return await axios.post(`${apiDomain}/account/register`, credentials).then((res) => {
-              set({
-                authenticated: true,
-                authToken: res.data.data.authToken,
-                user: res.data.data.user,
-                business: res.data.data.business,
+            await request
+              .post({
+                url: "/account/register",
+                body: credentials,
               })
-              return res.data
-            })
+              .then((resp) => {
+                if (resp.status === true) {
+                  set({
+                    authenticated: true,
+                    authToken: resp.data.authToken,
+                    user: resp.data.user,
+                    business: resp.data.business,
+                  })
+                }
+                return resp.data
+              })
           } catch (error: any) {
-            console.log(error.response.data)
-            return error.response.data
+            throw error
           }
         },
         login: async (credentials) => {
           try {
-            return await axios.post(`${apiDomain}/account/login`, credentials).then((res) => {
-              set({
-                authenticated: true,
-                authToken: res.data.data.authToken,
-                user: res.data.data.user,
-                business: res.data.data.business,
+            return await request
+              .post({
+                url: "/account/login",
+                body: credentials,
               })
-              return res.data
-            })
+              .then((resp) => {
+                if (resp.status === true) {
+                  set({
+                    authenticated: true,
+                    authToken: resp.data.authToken,
+                    user: resp.data.user,
+                    business: resp.data.business,
+                  })
+                }
+                return resp
+              })
           } catch (error: any) {
-            console.log(error.response.data)
-            return error.response.data
+            throw error
           }
         },
         logout: () => {

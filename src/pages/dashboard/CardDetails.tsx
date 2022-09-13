@@ -49,7 +49,7 @@ export const CardDetails: React.FC<{}> = () => {
       date: "January 13th, 2022",
     },
   ]
-  console.log(card_detail)
+
   return (
     <DashboardWrapper>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 lg:gap-8">
