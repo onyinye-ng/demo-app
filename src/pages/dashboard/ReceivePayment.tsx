@@ -78,7 +78,7 @@ export const ReceivePayment: React.FC<{}> = () => {
                   className="border border-grey-light"
                   required
                   placeholder="ex. 500"
-                  prefixElem={<span className="text-grey-dark">NGN</span>}
+                  affix={<span className="text-grey-dark">NGN</span>}
                   // &#8358;
                 />
               </div>

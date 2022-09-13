@@ -31,7 +31,7 @@ type props = {
 
 export const OnboardingWrapper: React.FC<props> = ({ children }) => {
   return (
-    <div className="h-screen bg-primary text-primary-light flex justify-center items-center">
+    <div className="h-screen bg-gradient-to-t from-primary-dark bg-primary text-primary-light flex justify-center items-center">
       <div className="h-5/6 w-full flex flex-col justify-between items-center">
         <StatusBar />
         <Header />

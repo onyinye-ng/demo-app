@@ -7,10 +7,10 @@
  * @param fn function to be executed
  * @returns unsubscribe function
  */
-export const once = (fn: Function, unsubscribe?: Function, timeout?: number) => {
+export const once = (fn: Function, unsubscribe?: Function) => {
   const id = setTimeout(() => {
     fn()
-  }, timeout ?? 1000)
+  }, 0)
 
   return () => {
     if (unsubscribe) unsubscribe()

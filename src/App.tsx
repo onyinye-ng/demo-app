@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom"
 import {
   CardActivation,
   CardDetails,
+  Cards,
   Dashboard,
   Login,
   ReceivePayment,
@@ -30,6 +31,10 @@ function App() {
           <Route
             path="/dashboard"
             element={<Dashboard />}
+          />
+          <Route
+            path="/dashboard/cards"
+            element={<Cards />}
           />
           <Route
             path="/dashboard/activate"
