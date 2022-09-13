@@ -1,6 +1,6 @@
 import create from "zustand"
 import { devtools, persist } from "zustand/middleware"
-import { appId } from "../utils"
+import { appId, authToken, request } from "../utils"
 
 export interface Card {
   id: string
@@ -42,7 +42,29 @@ export const useCardStore = create<CardState & CardMethods>()(
             cards: [],
           })
         },
-        createCard: async (credentials) => {},
+        createCard: async (credentials) => {
+          try {
+            return await request
+              .post({
+                url: "/cards",
+                body: credentials,
+                headers: {
+                  ...authToken(),
+                },
+              })
+              .then((resp) => {
+                if (resp.status === true) {
+                  const cards = get().cards
+                  set({
+                    cards: [resp.data.card, ...cards],
+                  })
+                }
+                return resp
+              })
+          } catch (error) {
+            throw error
+          }
+        },
         getCards: async () => {},
         activateCard: async (credentials) => {},
         cardPayment: async (credentials) => {},
