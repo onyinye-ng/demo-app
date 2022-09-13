@@ -53,7 +53,7 @@ export const StatusBar: React.FC<{}> = () => {
                 <IconButton
                   title="remove"
                   onClick={() => removeToast(toast)}
-                  className="absolute right-0 top-0 m-1 opacity-0 hover:opacity-100 hover:bg-opacity-70 bg-grey-light"
+                  className={`absolute right-0 top-0 m-1 opacity-20 hover:opacity-100 hover:bg-opacity-70 ${toast.color}`}
                 >
                   <XMarkIcon className="w-5" />
                 </IconButton>
@@ -64,7 +64,7 @@ export const StatusBar: React.FC<{}> = () => {
                 ) : (
                   <ExclamationCircleIcon className="w-7 h-7 min-w-min" />
                 )}
-                <span>{toast.message}</span>
+                <span className="mt-0.5">{toast.message}</span>
               </div>
             ))}
         </div>
