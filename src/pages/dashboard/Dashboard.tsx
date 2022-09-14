@@ -1,94 +1,61 @@
-import { ArrowLongLeftIcon, ArrowLongRightIcon } from "@heroicons/react/24/solid"
-import React, { FormEvent, useState } from "react"
-import { Card, DashboardWrapper, Label, PrefixInput } from "../../components"
-import { Button } from "../../components"
-import { Card as CardType, useStatusStore } from "../../stores"
+import { PlusIcon } from "@heroicons/react/24/solid"
+import React, { useEffect } from "react"
+import { DashboardWrapper, LinkButton } from "../../components"
+import { useAccountStore, useCardStore } from "../../stores"
+import { once } from "../../utils"
 
 export const Dashboard: React.FC<{}> = () => {
-  const { loading } = useStatusStore()
-  const giftCard: CardType[] = []
+  const { cards, getCards } = useCardStore()
+  const { business, user } = useAccountStore()
 
-  const [credentials, setCredentials] = useState({
-    amount: 0,
-    couponCode: "",
-    qrCodeValue: "",
-  })
-
-  const handleChange = (field: string, value: string | boolean) => {
-    console.log(field, value)
-    setCredentials({
-      ...credentials,
-      [field]: value,
+  // get cards
+  useEffect(() => {
+    return once(() => {
+      getCards()
     })
-  }
-
-  const handleSubmit = async (e?: FormEvent) => {
-    e?.preventDefault()
-    console.log(credentials)
-    loading(true, "Making payment...", "border-secondary", "bg-primary-dark")
-  }
+  }, [cards.length, getCards])
 
   return (
     <DashboardWrapper>
-      <div className="h-full w-full md:w-8/12 lg:w-5/12 mx-auto">
+      <div className="h-full w-full md:w-8/12 lg:w-6/12 mx-auto">
         <div className="md:mt-14 mt-5 flex flex-col gap-4 justify-start">
-          <h3 className="text-3xl font-medium">Create card</h3>
+          <h3 className="text-5xl font-medium">{business?.businessName}</h3>
+          <small>
+            {user?.email}, tel: {user?.telephone}
+          </small>
 
-          <div className="flex flex-col gap-8">
-            <form
-              id="paymentForm"
-              onSubmit={handleSubmit}
-              className="flex flex-col gap-3"
-            >
-              <div className="w-full flex flex-col gap-1">
-                <Label htmlFor="amount">Amount</Label>
-                <PrefixInput
-                  id="amount"
-                  type="number"
-                  min={1}
-                  defaultValue={credentials.amount}
-                  onChange={(e) => handleChange("amount", e.target.value)}
-                  className="border border-grey-light"
-                  required
-                  placeholder="ex. 500"
-                  affix={<span className="text-grey-dark">NGN</span>}
-                  // &#8358;
-                />
+          <hr className="text-grey-light" />
+
+          <div className="flex flex-col md:flex-row gap-3 justify-between">
+            <div className="w-full md:w-1/2">
+              <div className="h-[180px] min-w-[312px] bg-primary rounded-lg flex justify-center items-center">
+                <span className="text-4xl text-ellipsis text-primary-light">
+                  {cards.length ?? 0} Cards
+                </span>
               </div>
 
-              <Button
-                title="Create card"
-                type="submit"
-                className="mt-4 bg-primary text-primary-light"
+              <LinkButton
+                to="/dashboard/cards"
+                className="bg-grey w-full md:w-fit text-white mt-5 flex justify-center items-center gap-1"
+                title="create card"
               >
-                Create
-              </Button>
-            </form>
+                <PlusIcon className="w-5" />
+                Create Card
+              </LinkButton>
+            </div>
 
-            <hr className="text-grey-light" />
-
-            <div className="flex flex-col gap-3 mb-10">
-              <div className="w-full bg-scondary-dark flex justify-between flex-wrap gap-0">
-                {giftCard.map((card) => (
-                  <Card card={card!} />
-                ))}
+            <div className="w-full md:w-1/2 my-16 md:my-0 flex justify-start items-center font-medium flex-col gap-7">
+              <div className="w-1/2">
+                {cards.filter((card) => card.status === "active").length} active cards
               </div>
-
-              <div className="flex justify-between items-center mx-1">
-                <Button
-                  title="previous"
-                  className="py-2 text-primary-dark hover:bg-grey-light focus:bg-grey-light flex items-center gap-1"
-                >
-                  <ArrowLongLeftIcon className="w-4" />
-                  <span>Previous</span>
-                </Button>
-                <Button
-                  title="next"
-                  className="py-2 text-primary-dark hover:bg-grey-light focus:bg-grey-light flex items-center gap-1"
-                >
-                  <span>Next</span>
-                  <ArrowLongRightIcon className="w-4" />
-                </Button>
+              <div className="w-1/2">
+                {cards.filter((card) => card.status === "inactive").length} inactive cards
+              </div>
+              <div className="w-1/2">
+                {cards.filter((card) => card.status === "used").length} used-up cards
+              </div>
+              <div className="w-1/2">
+                {cards.filter((card) => card.status === "destroyed").length} destroyed cards
               </div>
             </div>
           </div>

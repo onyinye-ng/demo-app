@@ -113,11 +113,34 @@ export const ReceivePayment: React.FC<{}> = () => {
           <h3 className="text-3xl font-medium">Receive Payment</h3>
 
           <div className="flex flex-col gap-6">
-            <p className="inline-block">
-              Inorder to activate a card you would have to open this page on your mobile device to
-              continue. Once you've clicked the button scan the qrcode behind your gift card and
-              click on the activate button. once card activation is successful you can begin
-              spending with your card
+            <p className="flex flex-col gap-1.5">
+              <p>
+                These gift-cards can be gifted or sold to your customers. This acts as an incentive
+                to bring them back to your business and also to bring in new customers.
+              </p>
+              <p>
+                When a customer has hold of this card. It's acts a means of payment for products and
+                services offered by your business.
+              </p>
+              <p>Note that only active cards can be used for payments.</p>
+              <p>To receive payment from a customer,</p>
+              <p>Open a card you want to use for payment on a separate device.</p>
+              <p>Enter the amount for the service</p>
+              <p>Enter the coupon code on the card and click "Recieve Payment" OR</p>
+              <p>Go ahead and scan the QR Code on the card.</p>
+              <p>
+                If you are using this demo on a Desktop or Laptop computer, it would use your front
+                camera or webcam.
+              </p>
+              <p>
+                If you are using this demo on a Tablet or Mobile phone, it would use your back
+                camera. You can also switch to your front camera with the toggle button.
+              </p>
+              <p>Once the scan finds a QR code, the payment process starts automatically.</p>
+              <p>
+                Once the payment is successful, a demo receipt would be shown which would be made
+                available for printing on the live application.
+              </p>
             </p>
 
             <form
@@ -182,7 +205,7 @@ export const ReceivePayment: React.FC<{}> = () => {
                 <Button
                   title="Receive payment"
                   type="submit"
-                  className="mt-4 bg-primary text-primary-light"
+                  className="mt-4 mb-7 bg-primary text-primary-light"
                 >
                   Receive Payment
                 </Button>
@@ -191,7 +214,7 @@ export const ReceivePayment: React.FC<{}> = () => {
                   title="Scan QR Code"
                   type="button"
                   onClick={() => startScanner()}
-                  className="mt-4 bg-primary text-primary-light"
+                  className="mt-4 mb-7 bg-primary text-primary-light"
                 >
                   Scan QR Code
                 </Button>
