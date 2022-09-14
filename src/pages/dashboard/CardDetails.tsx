@@ -14,11 +14,11 @@ import { Card as CardType, useCardStore, useStatusStore } from "../../stores"
 import { formatDate, formatTime, once } from "../../utils"
 
 export const CardDetails: React.FC<{}> = () => {
-  const { getCard } = useCardStore()
+  const { getCard, destroyCard } = useCardStore()
   const { id } = useParams<{ id: string }>()
   const [card, setCard] = useState<CardType>()
   const [operations, setOperations] = useState<any[]>()
-  const { toast, loading } = useStatusStore()
+  const { toast, loading, confirm, isLoading, closeConfirm } = useStatusStore()
   const navigate = useNavigate()
   const [fetching, setFetching] = useState<boolean>(true)
 
@@ -32,7 +32,6 @@ export const CardDetails: React.FC<{}> = () => {
       if (resp.status === true) {
         setCard(resp.data.card)
         setOperations(resp.data.operations)
-        toast.success("Card found.")
       } else {
         navigate(-1)
         toast.error("Card not found.")
@@ -49,6 +48,35 @@ export const CardDetails: React.FC<{}> = () => {
       fetchCard()
     })
   }, [fetchCard, loading])
+
+  const handleCardDestroy = () => {
+    confirm.error(
+      <div>
+        Are you sure you want to destroy this card?
+        <br />
+        Note that this action is irreversible!
+      </div>,
+      "Destroy",
+      async () => {
+        try {
+          loading(true, "Destroying card...", "border-secondary", "bg-primary")
+          const resp = await destroyCard(id!)
+          loading(false)
+
+          if (resp.status === true) {
+            toast.success(resp.message)
+            await fetchCard()
+          } else toast.error(resp.message)
+
+          closeConfirm()
+        } catch (error: any) {
+          loading(false)
+          toast.error(error.message)
+          closeConfirm()
+        }
+      }
+    )
+  }
 
   return (
     <DashboardWrapper>
@@ -122,6 +150,8 @@ export const CardDetails: React.FC<{}> = () => {
                 {["active", "inactive"].includes(card?.status!) === true && (
                   <Button
                     title="destroy"
+                    onClick={handleCardDestroy}
+                    disabled={isLoading}
                     className="w-full mt-5 bg-danger text-danger-light flex justify-center items-center gap-3"
                   >
                     <span>Destroy card</span>
