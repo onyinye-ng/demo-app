@@ -5,6 +5,7 @@ import {
   CardDetails,
   Cards,
   Dashboard,
+  // ErrorBoundary,
   Login,
   ReceivePayment,
   Register,
@@ -14,6 +15,7 @@ import {
 function App() {
   return (
     <>
+      {/* <ErrorBoundary> */}
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route
@@ -50,6 +52,7 @@ function App() {
           />
         </Routes>
       </Suspense>
+      {/* </ErrorBoundary> */}
     </>
   )
 }
