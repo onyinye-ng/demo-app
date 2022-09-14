@@ -1,5 +1,5 @@
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from "@heroicons/react/24/solid"
-import React, { FormEvent, useEffect } from "react"
+import React, { FormEvent, useEffect, useState } from "react"
 import { Card, DashboardWrapper, Label, PrefixInput } from "../../components"
 import { Button } from "../../components"
 import { useCardStore, useForm, useStatusStore } from "../../stores"
@@ -7,8 +7,13 @@ import { clearInput, once } from "../../utils"
 
 export const Cards: React.FC<{}> = () => {
   const { loading, toast } = useStatusStore()
-  const { createCard, cards } = useCardStore()
+  const { createCard, cards, getCards } = useCardStore()
   const { credentials, errors, setCredential, setCredentials, setErrors } = useForm()
+  const [pagination, setPagination] = useState({
+    current: useCardStore.getState().cards.length > 0 ? 1 : 0,
+    total: Math.ceil(useCardStore.getState().cards.length / 4),
+    limit: 4,
+  })
 
   // set initial credentials
   useEffect(() => {
@@ -19,6 +24,13 @@ export const Cards: React.FC<{}> = () => {
     })
   }, [setCredentials])
 
+  // get cards
+  useEffect(() => {
+    return once(() => {
+      getCards()
+    })
+  }, [cards.length, getCards])
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     try {
@@ -27,7 +39,8 @@ export const Cards: React.FC<{}> = () => {
       loading(false)
       if (resp.status === true) {
         clearInput("amount")
-        toast.success(resp.message, false)
+        toast.success(resp.message)
+        setPagination({ ...pagination, total: Math.ceil(useCardStore.getState().cards.length / 4) })
       } else {
         setErrors(resp.errors)
         toast.error(resp.message)
@@ -56,7 +69,7 @@ export const Cards: React.FC<{}> = () => {
                 <PrefixInput
                   id="amount"
                   type="number"
-                  min={500}
+                  min={1000}
                   defaultValue={credentials.amount}
                   onChange={(e) => setCredential("amount", e.target.value)}
                   className="border border-grey-light"
@@ -80,26 +93,46 @@ export const Cards: React.FC<{}> = () => {
             <hr className="text-grey-light" />
 
             <div className="flex flex-col gap-3 mb-10">
-              <div className="w-full bg-scondary-dark flex justify-between flex-wrap gap-0">
-                {cards.map((card, index) => (
-                  <Card
-                    key={index}
-                    card={card!}
-                  />
-                ))}
+              <div className="w-full h-auto md:h-[352px] bg-scondary-dark flex justify-between flex-wrap gap-0">
+                {cards.length > 0
+                  ? cards
+                      ?.slice(
+                        (pagination.current - 1) * pagination.limit,
+                        pagination.limit * pagination.current
+                      )
+                      .map((card, index) => (
+                        <Card
+                          key={index}
+                          card={card!}
+                        />
+                      ))
+                  : "No cards."}
               </div>
 
               <div className="flex justify-between items-center mx-1">
                 <Button
                   title="previous"
                   className="py-2 text-primary-dark hover:bg-grey-light focus:bg-grey-light flex items-center gap-1"
+                  disabled={pagination.current <= 1}
+                  onClick={() => {
+                    setPagination({ ...pagination, current: pagination.current - 1 })
+                  }}
                 >
                   <ArrowLongLeftIcon className="w-4" />
                   <span>Previous</span>
                 </Button>
+
+                <span>
+                  {pagination.current}/{pagination.total}
+                </span>
+
                 <Button
                   title="next"
                   className="py-2 text-primary-dark hover:bg-grey-light focus:bg-grey-light flex items-center gap-1"
+                  disabled={pagination.current === pagination.total}
+                  onClick={() => {
+                    setPagination({ ...pagination, current: pagination.current + 1 })
+                  }}
                 >
                   <span>Next</span>
                   <ArrowLongRightIcon className="w-4" />
