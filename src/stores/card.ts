@@ -96,7 +96,14 @@ export const useCardStore = create<CardState & CardMethods>()(
             },
           })
         },
-        activateCard: async (credentials) => {},
+        activateCard: async (qrCodeValue) => {
+          return await request.patch({
+            url: `/cards/${qrCodeValue}/activate`,
+            headers: {
+              ...authToken(),
+            },
+          })
+        },
         cardPayment: async (credentials) => {},
       }),
       {
