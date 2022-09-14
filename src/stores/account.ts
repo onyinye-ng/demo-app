@@ -9,7 +9,11 @@ export interface User {
   role: "user" | "admin"
   created: string
 }
-export interface Business {}
+export interface Business {
+  businessName: string
+  businessSlug: string
+  created: string
+}
 export type RegisterCredentials = {
   businessName: string
   email: string
