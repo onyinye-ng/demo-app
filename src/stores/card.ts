@@ -104,7 +104,15 @@ export const useCardStore = create<CardState & CardMethods>()(
             },
           })
         },
-        cardPayment: async (credentials) => {},
+        cardPayment: async (credentials) => {
+          return await request.post({
+            url: `/cards/payment`,
+            body: credentials,
+            headers: {
+              ...authToken(),
+            },
+          })
+        },
       }),
       {
         name: `${appId}.card`,

@@ -1,6 +1,7 @@
 import {
   ArrowLeftIcon,
   BoltIcon,
+  DocumentDuplicateIcon,
   ExclamationTriangleIcon,
   SparklesIcon,
   TrashIcon,
@@ -11,7 +12,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { Button, Card, DashboardWrapper, IconButton } from "../../components"
 import { LoadingIndicator } from "../../components/layouts/StatusBar"
 import { Card as CardType, useCardStore, useStatusStore } from "../../stores"
-import { formatDate, formatTime, once } from "../../utils"
+import { copyToClipboard, formatDate, formatTime, once } from "../../utils"
 
 export const CardDetails: React.FC<{}> = () => {
   const { getCard, destroyCard } = useCardStore()
@@ -80,7 +81,7 @@ export const CardDetails: React.FC<{}> = () => {
 
   return (
     <DashboardWrapper>
-      <div className="h-full w-full md:w-8/12 lg:w-5/12 mx-auto">
+      <div className="h-full w-full md:w-8/12 lg:w-6/12 mx-auto">
         <div className="md:mt-14 mt-5 flex flex-col gap-4 justify-start">
           <h3 className="text-3xl font-medium flex justify-between">
             <span>Card details</span>
@@ -97,7 +98,7 @@ export const CardDetails: React.FC<{}> = () => {
             <LoadingIndicator borderColor="border-primary" />
           ) : (
             <div className="mt-8 w-full flex flex-col md:flex-row gap-8 justify-between">
-              <div className="w-fit 1/2 flex flex-col gap-4 bg-se condary">
+              <div className="w-full md:w-fit flex flex-col gap-4 bg-se condary">
                 <Card card={card!} />
 
                 <div className="w-full flex gap-6">
@@ -131,7 +132,16 @@ export const CardDetails: React.FC<{}> = () => {
 
                 <div className="w-full flex flex-col">
                   <span>COUPON CODE</span>
-                  <code className="w-full text-4xl">{card?.couponCode}</code>
+                  <div className="w-full flex justify-between items-start">
+                    <code className="w-full text-4xl">{card?.couponCode}</code>
+                    <IconButton
+                      title="copy"
+                      onClick={() => copyToClipboard(card?.couponCode!)}
+                      className="bg-grey-light text-grey"
+                    >
+                      <DocumentDuplicateIcon className="w-4" />
+                    </IconButton>
+                  </div>
                 </div>
 
                 <div className="w-full flex justify-between">
@@ -163,9 +173,12 @@ export const CardDetails: React.FC<{}> = () => {
               <div className="w-full md:w-1/2">
                 <h5 className="text-2xl font-medium text-end mb-5">Card Operations</h5>
 
-                <div className="w-full flex flex-col gap-3">
-                  {operations?.map((operation: any) => (
-                    <div className="w-full flex justify-between items-start">
+                <div className="w-full md:h-[500px] overflow-y-auto px-2 flex flex-col gap-3">
+                  {operations?.map((operation: any, index) => (
+                    <div
+                      key={index}
+                      className="w-full flex justify-between items-start"
+                    >
                       <div className="flex gap-3 items-center">
                         {operation.operations === "created" && (
                           <SparklesIcon className="w-4 text-grey" />
