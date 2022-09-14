@@ -1,20 +1,30 @@
 import React, { useState } from "react"
 import { Button, DashboardWrapper, QRScanner } from "../../components"
-import { useStatusStore } from "../../stores"
+import { useCardStore, useStatusStore } from "../../stores"
 
 export const CardActivation: React.FC<{}> = () => {
-  const { loading, toast } = useStatusStore()
+  const { loading, toast, isLoading } = useStatusStore()
   const [isScanning, setIsScanning] = useState<boolean>(false)
+  const { activateCard } = useCardStore()
 
   const startScanner = () => {
     setIsScanning(true)
   }
 
-  const onQrScanned = (data: string) => {
-    const credentials = { qrCodeValue: data }
-    console.log(credentials)
-    loading(true, "Activating card...", "border-secondary", "bg-primary-dark")
-    toast.success("Activated!")
+  const onQrScanned = async (data: string) => {
+    try {
+      loading(true, "Activating card...", "border-secondary", "bg-primary-dark")
+      const resp = await activateCard(data)
+      loading(false)
+      if (resp.status === true) {
+        toast.success(resp.message)
+      } else {
+        toast.error(resp.message)
+      }
+    } catch (error: any) {
+      loading(false)
+      toast.error(error.message)
+    }
   }
 
   return (
@@ -40,6 +50,7 @@ export const CardActivation: React.FC<{}> = () => {
 
             <Button
               title="Scan QR Code"
+              disabled={isLoading}
               type="button"
               onClick={() => startScanner()}
               className="mt-4 bg-primary text-primary-light"
