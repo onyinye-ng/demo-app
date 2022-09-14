@@ -98,7 +98,7 @@ export const CardDetails: React.FC<{}> = () => {
             <LoadingIndicator borderColor="border-primary" />
           ) : (
             <div className="mt-8 w-full flex flex-col md:flex-row gap-8 justify-between">
-              <div className="w-full md:w-fit flex flex-col gap-4 bg-se condary">
+              <div className="w-full md:w-fit flex flex-col gap-4">
                 <Card card={card!} />
 
                 <div className="w-full flex gap-6">

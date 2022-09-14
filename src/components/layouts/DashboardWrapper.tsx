@@ -112,7 +112,7 @@ const Header: React.FC<{}> = () => {
 
 const Footer: React.FC<{}> = () => {
   return (
-    <div className="static xl:sticky lg:bottom-0 h-[10%] p-3">
+    <div className="static lg:sticky lg:bottom-0 h-[10%] p-3">
       <div className="py-5">&copy;&nbsp;Onyinye&nbsp;Technologies&nbsp;2022</div>
     </div>
   )
@@ -142,7 +142,7 @@ export const DashboardWrapper: React.FC<props> = ({ children }) => {
         <StatusBar />
         <Header />
 
-        <div className="h -[90%]">
+        <div className="xl:h -[90%]">
           <div className="h-[90%] p-3">{children}</div>
           <Footer />
         </div>
