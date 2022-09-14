@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import logo from "../../assets/logo.svg"
 import { StatusBar } from "./StatusBar"
@@ -6,6 +6,7 @@ import { useState } from "react"
 import { IconButton, TextButton } from "../"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid"
 import { useAccountStore, useStatusStore } from "../../stores"
+import { once } from "../../utils"
 
 const Header: React.FC<{}> = () => {
   const { pathname } = useLocation()
@@ -24,7 +25,7 @@ const Header: React.FC<{}> = () => {
 
   return (
     <div className="h-[10%] flex items-center justify-between py-6 px-3 container mx-auto">
-      <Link to="/">
+      <Link to="/dashboard">
         <img
           src={logo}
           alt="Logo"
@@ -118,6 +119,19 @@ type props = {
 }
 
 export const DashboardWrapper: React.FC<props> = ({ children }) => {
+  const { authenticated } = useAccountStore()
+  const navigate = useNavigate()
+  const { toast } = useStatusStore()
+
+  useEffect(() => {
+    return once(() => {
+      if (authenticated === false) {
+        navigate("/login")
+        toast.error("Unauthorized. Please login.")
+      }
+    })
+  }, [authenticated, navigate, toast])
+
   return (
     <div className="h-screen bg-primary-light text-grey-dark overflow-auto">
       <div className="container mx-auto h-full">

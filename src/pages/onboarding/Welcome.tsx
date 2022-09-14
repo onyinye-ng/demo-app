@@ -2,8 +2,11 @@ import React from "react"
 import { Link } from "react-router-dom"
 import { OnboardingWrapper } from "../../components"
 import { ArrowRightIcon } from "@heroicons/react/24/solid"
+import { useAccountStore } from "../../stores"
 
 export const Welcome: React.FC<{}> = () => {
+  const { authenticated } = useAccountStore()
+
   return (
     <OnboardingWrapper>
       <div className="h-4/5 flex justify-center items-center">
@@ -16,22 +19,33 @@ export const Welcome: React.FC<{}> = () => {
           </span>
 
           <div className="flex flex-col w-auto gap-2 mt-16">
-            <Link
-              to="/register"
-              className="p-3 px-6 text-center rounded-md hover:opacity-90 bg-primary-light text-primary"
-            >
-              Create a Demo Business
-            </Link>
-            <Link
-              to="/login"
-              className="p-3 mt-3 px-6 text-center rounded-md hover:opacity-90 text-primary-light flex items-center gap-3 hover:scale-105"
-            >
-              <span>Log in to your Demo Business</span>
-              <ArrowRightIcon
-                width={18}
-                className=""
-              />
-            </Link>
+            {authenticated === false ? (
+              <>
+                <Link
+                  to="/register"
+                  className="p-3 px-6 text-center rounded-md hover:opacity-90 bg-primary-light text-primary"
+                >
+                  Create a Demo Business
+                </Link>
+                <Link
+                  to="/login"
+                  className="p-3 mt-3 px-6 text-center rounded-md hover:opacity-90 text-primary-light flex items-center gap-3 hover:scale-105"
+                >
+                  <span>Log in to your Demo Business</span>
+                  <ArrowRightIcon
+                    width={18}
+                    className=""
+                  />
+                </Link>
+              </>
+            ) : (
+              <Link
+                to="/dashboard"
+                className="p-3 px-6 text-center rounded-md hover:opacity-90 bg-primary-light text-primary"
+              >
+                Continue to Business Dashboard
+              </Link>
+            )}
           </div>
         </div>
       </div>

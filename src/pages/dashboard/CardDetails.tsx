@@ -192,7 +192,7 @@ export const CardDetails: React.FC<{}> = () => {
                         {operation.operations === "destroyed" && (
                           <TrashIcon className="w-4 text-danger" />
                         )}
-                        <span className="font-medium">Card is {operation?.operations}</span>
+                        <span className="font-medium">Card {operation?.operations}</span>
                       </div>
                       <span className="text-end">
                         {formatDate(card?.created!)}
