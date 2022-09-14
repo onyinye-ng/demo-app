@@ -127,7 +127,7 @@ export const Cards: React.FC<{}> = () => {
                 </Button>
 
                 <span>
-                  {pagination.current}/{pagination.total}
+                  Page {pagination.current}/{pagination.total}
                 </span>
 
                 <Button

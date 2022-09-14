@@ -14,7 +14,7 @@ export const Card: React.FC<{ card: CardType; onClick?: Function; showStatus?: b
     >
       <div className="bg-primary hover:bg-primary-dark w-full h-full rounded-lg relative shadow-sm flex justify-center items-center">
         <span className="absolute top-0 right-0 mt-2 mr-3 font-medium text-grey-light">
-          &#8358;{card.amount}
+          &#8358;{card?.amount}
         </span>
         {card.new === true && (
           <SparklesIcon className="absolute top-0 left-0 m-5 w-5 animate-ping text-secondary" />
@@ -28,8 +28,8 @@ export const Card: React.FC<{ card: CardType; onClick?: Function; showStatus?: b
           <div className="absolute bottom-0 right-0 m-3">
             <span>
               {card?.status === "inactive" && <SparklesIcon className="w-4 text-grey" />}
-              {card?.status === "used" && <SparklesIcon className="w-4 text-secondary" />}
-              {card?.status === "active" && <BoltIcon className="w-4 text-success" />}
+              {card?.status === "active" && <SparklesIcon className="w-4 text-secondary" />}
+              {card?.status === "used" && <BoltIcon className="w-4 text-success" />}
               {card?.status === "destroyed" && <TrashIcon className="w-4 text-danger-light" />}
             </span>
           </div>

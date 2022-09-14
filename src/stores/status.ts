@@ -168,7 +168,7 @@ export const useStatusStore = create<StatusState & StatusMethods>()(
               : "bg-warning text-warning-light",
           message,
           action,
-          onConfirm: onConfirm === undefined ? async () => {} : onConfirm,
+          onConfirm: onConfirm === undefined ? async () => get().closeConfirm() : onConfirm,
           onCancel: onCancel === undefined ? async () => {} : onCancel,
         },
       })

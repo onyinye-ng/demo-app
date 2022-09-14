@@ -8,36 +8,94 @@ import {
   PrefixInput,
   QRScanner,
 } from "../../components"
-import { useStatusStore } from "../../stores"
+import { useAccountStore, useCardStore, useStatusStore } from "../../stores"
+import { formatDate, formatTime } from "../../utils"
 
 export const ReceivePayment: React.FC<{}> = () => {
   const [payWithCoupon, setPayWithCoupon] = useState<boolean>()
-  const { loading, toast } = useStatusStore()
+  const { loading, toast, confirm } = useStatusStore()
+  const { business } = useAccountStore()
   const [credentials, setCredentials] = useState({
     amount: 0,
     couponCode: "",
-    qrCodeValue: "",
+    qrCode: "",
   })
   const [isScanning, setIsScanning] = useState<boolean>(false)
+  const { cardPayment } = useCardStore()
 
   const handleChange = (field: string, value: string | boolean) => {
-    console.log(field, value)
     setCredentials({
       ...credentials,
       [field]: value,
     })
   }
 
-  const handlePayment = async (e?: FormEvent) => {
-    e?.preventDefault()
-    console.log(credentials)
-    loading(true, "Making payment...", "border-secondary", "bg-primary-dark")
+  const PaymentReceipt: React.FC<{ details: any }> = ({ details }) => {
+    return (
+      <div className="w-full">
+        <h4 className="text-xl font-semibold text-center">Payment Receipt</h4>
+        <div className="mt-5 flex text-sm flex-col gap-3">
+          <div className="w-full flex justify-between">
+            <span>Business</span>
+            <span className="text-ellipsis">{business?.businessName}</span>
+          </div>
+          <div className="w-full flex justify-between">
+            <span>Amount</span>
+            <span>{details.amount}</span>
+          </div>
+          <div className="w-full flex justify-between">
+            <span>Balance</span>
+            <span>{details.balance}</span>
+          </div>
+          <div className="w-full flex justify-between">
+            <span>Date</span>
+            <span className="text-right">
+              {formatDate(details.timestamp!)}
+              <br />
+              {formatTime(details.timestamp!)}
+            </span>
+          </div>
+        </div>
+      </div>
+    )
   }
 
-  const onQrScanned = (data: string) => {
-    const creds = { ...credentials, qrCodeValue: data }
-    console.log(creds)
-    loading(true, "Making payment...", "border-secondary", "bg-primary-dark")
+  const handlePayment = async (e: FormEvent) => {
+    e.preventDefault()
+
+    try {
+      loading(true, "Making payment...", "border-secondary", "bg-primary-dark")
+      const resp = await cardPayment(credentials)
+      loading(false)
+      if (resp.status === true) {
+        toast.success(resp.message)
+        confirm.success(<PaymentReceipt details={resp.data.details} />, "Done")
+      } else {
+        toast.error(resp.message)
+      }
+    } catch (error: any) {
+      loading(false)
+      toast.error(error.message)
+    }
+  }
+
+  const onQrScanned = async (data: string) => {
+    const creds = { ...credentials, couponCode: "", qrCode: data }
+
+    try {
+      loading(true, "Making payment...", "border-secondary", "bg-primary-dark")
+      const resp = await cardPayment(creds)
+      loading(false)
+      if (resp.status === true) {
+        toast.success(resp.message)
+        confirm.success(<PaymentReceipt details={resp.data.details} />, "Done")
+      } else {
+        toast.error(resp.message)
+      }
+    } catch (error: any) {
+      loading(false)
+      toast.error(error.message)
+    }
   }
 
   const startScanner = () => {
@@ -79,7 +137,6 @@ export const ReceivePayment: React.FC<{}> = () => {
                   required
                   placeholder="ex. 500"
                   affix={<span className="text-grey-dark">NGN</span>}
-                  // &#8358;
                 />
               </div>
 
