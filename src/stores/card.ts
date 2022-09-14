@@ -10,6 +10,7 @@ export interface Card {
   couponCode: string
   status: "active" | "inactive" | "used" | "destroyed"
   created: string
+  new: boolean
 }
 export type ActivateCardCredentials = {
   qrCodeValue: string
@@ -43,29 +44,42 @@ export const useCardStore = create<CardState & CardMethods>()(
           })
         },
         createCard: async (credentials) => {
-          try {
-            return await request
-              .post({
-                url: "/cards",
-                body: credentials,
-                headers: {
-                  ...authToken(),
-                },
-              })
-              .then((resp) => {
-                if (resp.status === true) {
-                  const cards = get().cards
-                  set({
-                    cards: [resp.data.card, ...cards],
-                  })
-                }
-                return resp
-              })
-          } catch (error) {
-            throw error
-          }
+          return await request
+            .post({
+              url: "/cards",
+              body: credentials,
+              headers: {
+                ...authToken(),
+              },
+            })
+            .then((resp) => {
+              if (resp.status === true) {
+                const cards = get().cards
+                // const now = new Date(Date.now())
+                // now.setSeconds(10)
+                set({
+                  cards: [{ ...resp.data.card, new: true }, ...cards],
+                })
+              }
+              return resp
+            })
         },
-        getCards: async () => {},
+        getCards: async () => {
+          await request
+            .get({
+              url: "/cards",
+              headers: {
+                ...authToken(),
+              },
+            })
+            .then((resp) => {
+              if (resp.status === true) {
+                set({
+                  cards: resp.data.cards.reverse(),
+                })
+              }
+            })
+        },
         activateCard: async (credentials) => {},
         cardPayment: async (credentials) => {},
       }),

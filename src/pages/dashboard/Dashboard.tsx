@@ -6,44 +6,7 @@ import { Card as CardType, useStatusStore } from "../../stores"
 
 export const Dashboard: React.FC<{}> = () => {
   const { loading } = useStatusStore()
-  const giftCard: CardType[] = [
-    {
-      id: "12345",
-      business: "12345",
-      amount: 10000,
-      balance: 10000,
-      couponCode: "1234567890AE",
-      status: "inactive",
-      created: Date.now().toString(),
-    },
-    {
-      id: "12345",
-      business: "12345",
-      amount: 10000,
-      balance: 10000,
-      couponCode: "1234567890AE",
-      status: "inactive",
-      created: Date.now().toString(),
-    },
-    {
-      id: "12345",
-      business: "12345",
-      amount: 10000,
-      balance: 10000,
-      couponCode: "1234567890AE",
-      status: "inactive",
-      created: Date.now().toString(),
-    },
-    {
-      id: "12345",
-      business: "12345",
-      amount: 10000,
-      balance: 10000,
-      couponCode: "1234567890AE",
-      status: "inactive",
-      created: Date.now().toString(),
-    },
-  ]
+  const giftCard: CardType[] = []
 
   const [credentials, setCredentials] = useState({
     amount: 0,
