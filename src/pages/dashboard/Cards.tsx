@@ -1,5 +1,6 @@
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from "@heroicons/react/24/solid"
 import React, { FormEvent, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { Card, DashboardWrapper, Label, PrefixInput } from "../../components"
 import { Button } from "../../components"
 import { useCardStore, useForm, useStatusStore } from "../../stores"
@@ -14,6 +15,7 @@ export const Cards: React.FC<{}> = () => {
     total: Math.ceil(useCardStore.getState().cards.length / 4),
     limit: 4,
   })
+  const navigate = useNavigate()
 
   // set initial credentials
   useEffect(() => {
@@ -54,7 +56,7 @@ export const Cards: React.FC<{}> = () => {
 
   return (
     <DashboardWrapper>
-      <div className="h-full w-full md:w-8/12 lg:w-5/12 mx-auto">
+      <div className="h-full w-full md:w-8/12 lg:w-6/12 mx-auto">
         <div className="md:mt-14 mt-5 flex flex-col gap-4 justify-start">
           <h3 className="text-3xl font-medium">Create card</h3>
 
@@ -102,6 +104,7 @@ export const Cards: React.FC<{}> = () => {
                       )
                       .map((card, index) => (
                         <Card
+                          onClick={() => navigate(`/dashboard/cards/${card.id}`)}
                           key={index}
                           card={card!}
                         />

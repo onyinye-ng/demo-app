@@ -37,16 +37,16 @@ function App() {
             element={<Cards />}
           />
           <Route
+            path="/dashboard/cards/:id"
+            element={<CardDetails />}
+          />
+          <Route
             path="/dashboard/activate"
             element={<CardActivation />}
           />
           <Route
             path="/dashboard/payment"
             element={<ReceivePayment />}
-          />
-          <Route
-            path="/dashboard/:id"
-            element={<CardDetails />}
           />
         </Routes>
       </Suspense>

@@ -10,7 +10,7 @@ export interface Card {
   couponCode: string
   status: "active" | "inactive" | "used" | "destroyed"
   created: string
-  new: boolean
+  new?: boolean
 }
 export type ActivateCardCredentials = {
   qrCodeValue: string
@@ -28,6 +28,7 @@ interface CardState {
 interface CardMethods {
   restoreDefault: () => void
   createCard: (credentials: Partial<Card>) => Promise<any>
+  getCard: (id: Card["id"]) => Promise<any>
   getCards: () => Promise<any>
   activateCard: (qrCodeValue: ActivateCardCredentials["qrCodeValue"]) => Promise<any>
   cardPayment: (credentials: CardPaymentCredentials) => Promise<any>
@@ -63,6 +64,14 @@ export const useCardStore = create<CardState & CardMethods>()(
               }
               return resp
             })
+        },
+        getCard: async (id) => {
+          return await request.get({
+            url: `/cards/${id}`,
+            headers: {
+              ...authToken(),
+            },
+          })
         },
         getCards: async () => {
           await request
