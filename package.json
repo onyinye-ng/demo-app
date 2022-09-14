@@ -25,6 +25,8 @@
     "zustand": "^4.1.1"
   },
   "scripts": {
+    "preinstall": "npm i --legacy-peer-deps",
+    "install": "npm i --legacy-peer-deps",
     "prepare": "husky install",
     "start": "react-scripts start",
     "test": "react-scripts test",
