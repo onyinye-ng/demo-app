@@ -171,7 +171,7 @@ export const CardDetails: React.FC<{}> = () => {
               </div>
 
               <div className="w-full md:w-1/2">
-                <h5 className="text-2xl font-medium text-end mb-5">Card Operations</h5>
+                <h5 className="text-2xl font-medium lg:text-end mb-5">Card Operations</h5>
 
                 <div className="w-full md:h-[500px] overflow-y-auto px-2 flex flex-col gap-3">
                   {operations?.map((operation: any, index) => (

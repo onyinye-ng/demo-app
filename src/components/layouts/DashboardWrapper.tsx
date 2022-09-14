@@ -24,7 +24,11 @@ const Header: React.FC<{}> = () => {
   }
 
   return (
-    <div className="h-[10%] flex items-center justify-between py-6 px-3 container mx-auto">
+    <div
+      className={`h-[10%] bg-primary-light md:shadow-none ${
+        navOpen === true ? "" : "z-10 sm:shadow-sm sm:sticky top-0"
+      } flex items-center justify-between py-6 px-3 container mx-auto`}
+    >
       <Link to="/dashboard">
         <img
           src={logo}
@@ -108,7 +112,7 @@ const Header: React.FC<{}> = () => {
 
 const Footer: React.FC<{}> = () => {
   return (
-    <div className="sticky bottom-0 h-[10%] p-3">
+    <div className="static xl:sticky lg:bottom-0 h-[10%] p-3">
       <div className="py-5">&copy;&nbsp;Onyinye&nbsp;Technologies&nbsp;2022</div>
     </div>
   )
@@ -138,7 +142,7 @@ export const DashboardWrapper: React.FC<props> = ({ children }) => {
         <StatusBar />
         <Header />
 
-        <div className="h-[90%]">
+        <div className="h -[90%]">
           <div className="h-[90%] p-3">{children}</div>
           <Footer />
         </div>

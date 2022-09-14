@@ -95,7 +95,7 @@ export const Cards: React.FC<{}> = () => {
             <hr className="text-grey-light" />
 
             <div className="flex flex-col gap-3 mb-10">
-              <div className="w-full h-auto md:h-[352px] bg-scondary-dark flex justify-between flex-wrap gap-0">
+              <div className="w-full h-auto xl:h-[352px] bg-scondary-dark flex justify-between flex-wrap gap-0">
                 {cards.length > 0
                   ? cards
                       ?.slice(
