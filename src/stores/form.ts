@@ -1,7 +1,7 @@
 import create from "zustand"
 import { devtools } from "zustand/middleware"
 
-export interface FormState {
+interface FormState {
   credentials: any | object
   errors: any | object
 }

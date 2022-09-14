@@ -52,48 +52,40 @@ export const useAccountStore = create<AccountState & AccountMethods>()(
           })
         },
         registerBusiness: async (credentials) => {
-          try {
-            await request
-              .post({
-                url: "/account/register",
-                body: credentials,
-              })
-              .then((resp) => {
-                if (resp.status === true) {
-                  set({
-                    authenticated: true,
-                    authToken: resp.data.authToken,
-                    user: resp.data.user,
-                    business: resp.data.business,
-                  })
-                }
-                return resp.data
-              })
-          } catch (error: any) {
-            throw error
-          }
+          return await request
+            .post({
+              url: "/account/register",
+              body: credentials,
+            })
+            .then((resp) => {
+              if (resp.status === true) {
+                set({
+                  authenticated: true,
+                  authToken: resp.data.authToken,
+                  user: resp.data.user,
+                  business: resp.data.business,
+                })
+              }
+              return resp.data
+            })
         },
         login: async (credentials) => {
-          try {
-            return await request
-              .post({
-                url: "/account/login",
-                body: credentials,
-              })
-              .then((resp) => {
-                if (resp.status === true) {
-                  set({
-                    authenticated: true,
-                    authToken: resp.data.authToken,
-                    user: resp.data.user,
-                    business: resp.data.business,
-                  })
-                }
-                return resp
-              })
-          } catch (error: any) {
-            throw error
-          }
+          return await request
+            .post({
+              url: "/account/login",
+              body: credentials,
+            })
+            .then((resp) => {
+              if (resp.status === true) {
+                set({
+                  authenticated: true,
+                  authToken: resp.data.authToken,
+                  user: resp.data.user,
+                  business: resp.data.business,
+                })
+              }
+              return resp
+            })
         },
         logout: () => {
           get().restoreDefault()
