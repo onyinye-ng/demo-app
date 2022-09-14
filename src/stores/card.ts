@@ -31,6 +31,7 @@ interface CardMethods {
   getCard: (id: Card["id"]) => Promise<any>
   getCards: () => Promise<any>
   activateCard: (qrCodeValue: ActivateCardCredentials["qrCodeValue"]) => Promise<any>
+  destroyCard: (id: Card["id"]) => Promise<any>
   cardPayment: (credentials: CardPaymentCredentials) => Promise<any>
 }
 
@@ -56,8 +57,6 @@ export const useCardStore = create<CardState & CardMethods>()(
             .then((resp) => {
               if (resp.status === true) {
                 const cards = get().cards
-                // const now = new Date(Date.now())
-                // now.setSeconds(10)
                 set({
                   cards: [{ ...resp.data.card, new: true }, ...cards],
                 })
@@ -88,6 +87,14 @@ export const useCardStore = create<CardState & CardMethods>()(
                 })
               }
             })
+        },
+        destroyCard: async (id) => {
+          return await request.patch({
+            url: `/cards/${id}/destroy`,
+            headers: {
+              ...authToken(),
+            },
+          })
         },
         activateCard: async (credentials) => {},
         cardPayment: async (credentials) => {},

@@ -106,6 +106,7 @@ export const Cards: React.FC<{}> = () => {
                         <Card
                           onClick={() => navigate(`/dashboard/cards/${card.id}`)}
                           key={index}
+                          showStatus={true}
                           card={card!}
                         />
                       ))

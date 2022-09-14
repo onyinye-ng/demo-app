@@ -1,8 +1,12 @@
 import { Card as CardType } from "../../stores"
 import logo from "../../assets/logo3.svg"
-import { SparklesIcon } from "@heroicons/react/24/solid"
+import { SparklesIcon, BoltIcon, TrashIcon } from "@heroicons/react/24/solid"
 
-export const Card: React.FC<{ card: CardType; onClick?: Function }> = ({ card, onClick }) => {
+export const Card: React.FC<{ card: CardType; onClick?: Function; showStatus?: boolean }> = ({
+  card,
+  onClick,
+  showStatus = false,
+}) => {
   return (
     <div
       onClick={() => onClick!()}
@@ -20,6 +24,16 @@ export const Card: React.FC<{ card: CardType; onClick?: Function }> = ({ card, o
           alt="Logo"
           className="lg:w-40 w-32"
         />
+        {showStatus === true && (
+          <div className="absolute bottom-0 right-0 m-3">
+            <span>
+              {card?.status === "inactive" && <SparklesIcon className="w-4 text-grey" />}
+              {card?.status === "used" && <SparklesIcon className="w-4 text-secondary" />}
+              {card?.status === "active" && <BoltIcon className="w-4 text-success" />}
+              {card?.status === "destroyed" && <TrashIcon className="w-4 text-danger-light" />}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   )
