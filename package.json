@@ -25,11 +25,10 @@
     "zustand": "^4.1.1"
   },
   "scripts": {
-    "preinstall": "npm config set legacy-peer-deps true",
     "prepare": "husky install",
     "start": "react-scripts start",
     "test": "react-scripts test",
-    "build": "npm run ci ----legacy-peer-deps & react-scripts build",
+    "build": "react-scripts build",
     "eject": "react-scripts eject",
     "prettier": "prettier --write --ignore-unknown ."
   },
