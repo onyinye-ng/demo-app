@@ -70,7 +70,7 @@ export const useAccountStore = create<AccountState & AccountMethods>()(
                   business: resp.data.business,
                 })
               }
-              return resp.data
+              return resp
             })
         },
         login: async (credentials) => {
