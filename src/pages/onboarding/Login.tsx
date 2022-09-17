@@ -1,23 +1,24 @@
-import React, { FormEvent, useState } from "react"
+import React, { FormEvent, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { OnboardingWrapper, Button, Input, Label, TextLink } from "../../components"
-import { useAccountStore, useStatusStore } from "../../stores"
+import { useAccountStore, useForm, useStatusStore } from "../../stores"
+import { once } from "../../utils"
 
 export const Login: React.FC<{}> = () => {
   const navigate = useNavigate()
   const { login } = useAccountStore()
   const { loading, toast } = useStatusStore()
-  const [credentials, setCredentials] = useState({
-    email: "",
-    telephone: "",
-  })
+  const { credentials, errors, setErrors, setCredential, setCredentials } = useForm()
 
-  const handleChange = (field: string, value: string | boolean) => {
-    setCredentials({
-      ...credentials,
-      [field]: value,
+  // set initial credentials
+  useEffect(() => {
+    return once(() => {
+      setCredentials({
+        email: "",
+        telephone: "",
+      })
     })
-  }
+  }, [setCredentials])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -29,6 +30,7 @@ export const Login: React.FC<{}> = () => {
         toast.success(resp.message)
         navigate("/dashboard")
       } else {
+        setErrors(resp.errors)
         toast.error(resp.message)
       }
     } catch (error: any) {
@@ -53,10 +55,11 @@ export const Login: React.FC<{}> = () => {
                 type="email"
                 id="email"
                 defaultValue={credentials.email}
-                onChange={(e) => handleChange("email", e.target.value)}
+                onChange={(e) => setCredential("email", e.target.value)}
                 autoComplete="email"
                 required
                 placeholder="ex. xyz.company@example.com"
+                errors={errors.email}
               />
             </div>
 
@@ -66,10 +69,11 @@ export const Login: React.FC<{}> = () => {
                 type="tel"
                 id="telephone"
                 defaultValue={credentials.telephone}
-                onChange={(e) => handleChange("telephone", e.target.value)}
+                onChange={(e) => setCredential("telephone", e.target.value)}
                 autoComplete="tel"
                 required
                 placeholder="ex. +234"
+                errors={errors.telephone}
               />
             </div>
 

@@ -1,25 +1,26 @@
-import React, { FormEvent, useState } from "react"
+import React, { FormEvent, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { OnboardingWrapper, Button, CheckboxInput, Input, Label, TextLink } from "../../components"
-import { RegisterCredentials, useAccountStore, useStatusStore } from "../../stores"
+import { useAccountStore, useForm, useStatusStore } from "../../stores"
+import { once } from "../../utils"
 
 export const Register: React.FC<{}> = () => {
   const navigate = useNavigate()
   const { registerBusiness } = useAccountStore()
   const { loading, toast } = useStatusStore()
-  const [credentials, setCredentials] = useState<RegisterCredentials>({
-    businessName: "",
-    email: "",
-    telephone: "",
-    subscribe: false,
-  })
+  const { credentials, errors, setErrors, setCredential, setCredentials } = useForm()
 
-  const handleChange = (field: string, value: string | boolean) => {
-    setCredentials({
-      ...credentials,
-      [field]: value,
+  // set initial credentials
+  useEffect(() => {
+    return once(() => {
+      setCredentials({
+        businessName: "",
+        email: "",
+        telephone: "",
+        subscribe: false,
+      })
     })
-  }
+  }, [setCredentials])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -31,6 +32,7 @@ export const Register: React.FC<{}> = () => {
         toast.success(resp.message)
         navigate("/dashboard")
       } else {
+        setErrors(resp.errors ?? {})
         toast.error(resp.message)
       }
     } catch (error: any) {
@@ -54,10 +56,11 @@ export const Register: React.FC<{}> = () => {
               <Input
                 id="businessName"
                 defaultValue={credentials.businessName}
-                onChange={(e) => handleChange("businessName", e.target.value)}
+                onChange={(e) => setCredential("businessName", e.target.value)}
                 autoComplete="name"
                 required
                 placeholder="ex. XYZ Company"
+                errors={errors.businessName}
               />
             </div>
 
@@ -67,10 +70,11 @@ export const Register: React.FC<{}> = () => {
                 type="email"
                 id="email"
                 defaultValue={credentials.email}
-                onChange={(e) => handleChange("email", e.target.value)}
+                onChange={(e) => setCredential("email", e.target.value)}
                 autoComplete="email"
                 required
                 placeholder="ex. xyz.company@example.com"
+                errors={errors.email}
               />
             </div>
 
@@ -80,10 +84,11 @@ export const Register: React.FC<{}> = () => {
                 type="tel"
                 id="telephone"
                 defaultValue={credentials.telephone}
-                onChange={(e) => handleChange("telephone", e.target.value)}
+                onChange={(e) => setCredential("telephone", e.target.value)}
                 autoComplete="tel"
                 required
                 placeholder="ex. +234"
+                errors={errors.telephone}
               />
             </div>
 
@@ -93,7 +98,7 @@ export const Register: React.FC<{}> = () => {
                 required
                 defaultChecked={credentials.subscribe}
                 id="subscribe"
-                onChange={(e) => handleChange("subscribe", e.target.checked)}
+                onChange={(e) => setCredential("subscribe", e.target.checked)}
               />
               <Label
                 htmlFor="subscribe"
