@@ -76,7 +76,7 @@ export const Cards: React.FC<{}> = () => {
                   onChange={(e) => setCredential("amount", e.target.value)}
                   className="border border-grey-light"
                   required
-                  placeholder="ex. 500"
+                  placeholder="ex. 1000"
                   affix={<span className="text-grey-dark">NGN</span>}
                   errors={errors.amount}
                 />

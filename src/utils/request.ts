@@ -29,8 +29,8 @@ const requestCore = async (method: RequestMethod, config: Request) => {
     body = method === "GET" || method === "HEAD" ? undefined : body
     headers =
       headers === undefined
-        ? { "Content-Type": "application/json" }
-        : { "Content-Type": "application/json", ...headers }
+        ? { "Content-Type": "application/json", "Sec-Fetch-Mode": "no-cors" }
+        : { "Content-Type": "application/json", "Sec-Fetch-Mode": "no-cors", ...headers }
 
     const response = await axios({
       baseURL: external === true ? url : apiDomain,
