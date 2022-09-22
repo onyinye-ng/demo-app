@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from "react"
+import React, { FormEvent, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { OnboardingWrapper, Button, Input, Label, TextLink } from "../../components"
 import { useAccountStore, useForm, useStatusStore } from "../../stores"
